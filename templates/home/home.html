@@ -1,0 +1,75 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} {{ title }}{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .background-image {
+      background-color: black;
+      background-image: url('/media/rp2r_bg.jpg');
+      background-size: 100% 100%;
+      min-height: 800px;
+      min-width: 600px;
+      background-position: center;
+      background-repeat: no-repeat;
+      {% comment %} filter: brightness(25%); {% endcomment %}
+    }
+
+    .text-light {
+      background-color: black;
+      margin-top: -210px;
+      margin-bottom: -20px; 
+    }
+    
+  
+    @media (max-width: 600px) {
+      /* Adjust the minimum size for smaller screens */
+      .background-image {
+        min-height: 200px;
+        min-width: 300px;
+      }
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="background-image">
+</div>
+
+<div class='text-light'>
+  <p class='text-center h3'> Welcome to our group of Romanian bikers in Italy! </p>
+  <br>
+  <p class='text-left' style='margin-left: 270px;'> We are a two-wheeled family with a passion for freedom, adrenaline, and friendship. </p>
+  <p class='text-left' style='margin-left: 270px;'> Within our group, you will find a passionate community with a variety of motorcycle experiences. </p>
+  <p class='text-left' style='margin-left: 270px;'> Regardless of your experience in motorcycling, you are welcome in our community. </p>
+  <p class='text-left' style='margin-left: 270px;'> Join us and discover the freedom on two wheels amidst the Italian landscapes. </p>
+  <p class='text-left' style='margin-left: 270px;'> Let's ride together and create unforgettable memories! </p>
+  <br>
+  <p class='text-center h5'>
+    <span class='text-primary'>
+      - all 
+    </span>
+    <span class='text-warning '>
+      for 
+    </span>
+    <span class='text-danger'>
+      one 
+    </span>
+    <span class='text-secondary small'>
+      and 
+    </span>
+    <span class='text-success'>
+      one 
+    </span>
+    <span style='color:#fff;'>
+      for 
+    </span>
+    <span class='text-danger'>
+      all -
+    </span>
+  </p>
+  <br><br>
+</div>
+{% endblock content %}
+

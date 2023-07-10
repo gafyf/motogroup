@@ -1,0 +1,70 @@
+div.user_head {
+    margin-left: 300px;
+    margin-top: 15px;
+}
+
+a.btn.btn-secondary-outline.btn-sm {
+    margin-left: 420px;
+    border-color: #ced4da;
+}
+
+form.form-control {
+    background:none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+p {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+label {
+    text-align: right;
+    margin-right: 5px;
+    display: inline-block;
+    width: 30%;
+}
+
+input.form-control {
+    display: inline-block;
+    width: 50%;
+}
+
+input#id_imagine.form-control {
+    opacity: 70%;
+    display: block;
+    width: 19%;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 2px;
+    border: 2px solid #6c757d;
+
+}
+
+img.user_img {
+    margin-left: 35%;
+    border-radius: 5px;
+    max-width: 55px;
+    max-height: 55px;
+}
+
+input.btn.btn-secondary {
+    width: 120px;
+    text-align: center;
+    margin-left: 15%;
+}
+
+
+/* 
+#text {
+    display: none;
+}  */
+
+/* input [class="form-control"]  */
+/* input#id_password1 [type='password'] */
+/* form.form-control input#id_password2 [type='password'] */

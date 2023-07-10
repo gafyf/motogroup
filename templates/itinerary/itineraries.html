@@ -1,0 +1,183 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Itineraries {% endblock %}
+
+{% block stylesheets %}
+ 
+  <style>
+    .footer {
+      /* Set styles for the footer */
+      margin-top: 10px; /* Adjust this value to match the height of the fixed form */
+    }
+    .custom-scroll {
+      max-height: 130px;
+      overflow-y: scroll;
+      scrollbar-width: thin; /* Width of the scrollbar - message form */
+      scrollbar-color: #888888 #f5f5f5; /* Color of the scrollbar - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px; /* Width of the scrollbar - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #888888; /* Color of the scrollbar thumb - message form */
+      border-radius: 4px; /* Rounded corners of the scrollbar thumb - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background-color: #555555; /* Color of the scrollbar thumb on hover - message form */
+    }
+
+    a {
+      text-decoration: none;
+    }
+    .col-add-event .text-warning:hover {
+      filter: invert(30%);
+    }
+  </style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div id='message-container-id' style='min-height: 100vh;' class="row container-fluid justify-content-between pt-4 mx-1">
+      <div class='col-md-12 d-flex flex-row justify-content-between'>
+        <div class='col-md-1 d-flex flex-column justify-content-start'>
+        </div>
+        <div class='col-add-event col-md-10 d-flex flex-column justify-content-center mb-4'>
+          <center>
+            {% if messages %}
+                {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show alert-sm" role="alert"{% endif %}>
+                  {{ message }}
+                  <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+          </center>
+          <h4 class="card-title text-bg-dark text-light my-4 mx-auto"> 
+            Want to let us know about an itinerary? Click
+            <a class="text-warning" href="{% url 'itinerary:create_itinerary' %}">
+              here 
+            </a>
+            and add one.
+          </h4>
+        </div>
+        <div class='col-md-1 d-flex flex-column justify-content-end'>
+        </div>
+      </div>
+      <div class='col-md-1 d-flex flex-column justify-content-start'>
+        {% comment %} <div id='card-event-id' class="fixed-form" style='position:fixed; top:125px; bottom:100px;'>
+          <a class="btn btn-outline-danger btn-sm" href="{% url 'event:event_form' %}">
+            <div class="card" id='' style='min-height: 250px; min-width: 160px;'>
+              <div class="card-header-primary my-auto mx-auto">
+                <h4 class="card-title text-danger my-4">
+                  Add an Event
+                </h4>
+              </div>
+            </div>
+          </a>
+        </div> {% endcomment %}
+      </div>
+      <div id='message-list-id' class="col-md-10 d-flex flex-column justify-content-center">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          {% for itinerary in page_obj %}
+          <div class="col">
+            <a class="text-dark" href="{{ itinerary.get_absolute_url }}" style="">
+              <div class="card h-100">
+                <div class='card-header d-flex justify-content-center max-w-auto my-auto' style="min-height: 250px; max-height: 300px;">
+                    <img id='image-url' class='img-fluid max-w-auto mx-auto my-auto' style='min-height: 190px; max-height: 190px; object-fit: contain;' alt="Itinerary Image" src="{{ itinerary.image.url }}">
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title d-flex justify-content-center mw-auto my-auto">{{ itinerary.name|title }}</h5>
+                  <div class='custom-scroll mt-4'>
+                    <p class="card-text mx-1">{{ itinerary.description }}</p>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <p class="text-muted d-flex justify-content-end my-auto mx-3">
+                  {{ itinerary.created_at|date:"d/m/Y" }}
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center my-4">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% endif %}
+        
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <li class="page-item active">
+                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+        
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+      <div class='col-md-1 d-flex flex-column justify-content-center'>
+      </div>
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  window.addEventListener('scroll', function() {
+    var form = document.getElementById('card-event-id');
+    var footer = document.getElementById('footer-id');
+    var prevScrollTop = 0;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    var footerTop = footer.offsetTop;
+  
+
+    if (scrollTop + windowHeight < footerTop) {
+      form.style.visibility = 'visible';
+      form.style.bottom = '';
+      form.style.top = '125px';
+      form.style.opacity = '1';
+    } else {
+      form.style.visibility = 'visible';
+      form.style.bottom = '';
+      form.style.top = '';
+      form.style.opacity = '1';
+    }
+
+    if (scrollTop < prevScrollTop) {
+      // Scrolling up
+      form.style.bottom = '';
+      form.style.top = '';
+    } else if (scrollTop === 0) {
+      // Reached the top
+      form.style.bottom = '';
+      form.style.top = '';
+    }
+  
+    prevScrollTop = scrollTop;
+  });
+  
+</script>
+
+{% endblock javascripts %}

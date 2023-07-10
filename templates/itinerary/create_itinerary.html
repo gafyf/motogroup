@@ -1,0 +1,398 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% translate "Create Itinerary" %} {% endblock %}
+
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/maps/maps.css"/>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/maps/maps-web.min.js"></script>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/services/services-web.min.js"></script>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox-web.js"></script>
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox.css"/>
+{% comment %} <link rel='stylesheet' type='text/css' href='../assets/ui-library/index.css'/> {% endcomment %}
+{% comment %} <script type='text/javascript' src='../assets/js/mobile-or-tablet.js'></script> {% endcomment %}
+
+{% block stylesheets %}
+<style>
+
+  .marker-wrapper {
+    width: 53px;
+    height: 33px;
+  }
+
+  .marker-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    background-image: url('/media/motorcycle_1.png');
+    background-size: cover;
+  }
+
+  .delete-marker {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+</style>
+{% endblock stylesheets %}
+
+{{ form.media }}
+  
+<div class="d-flex justify-content-center">
+  <form method="POST" id="id_itinerary_form" class="form-control bg-light" enctype="multipart/form-data">
+    <div class="d-flex flex-column align-items-center mt-3">
+      <div class='text-secondary mb-3'>
+        {% if not itinerary %}
+        <h2>{% translate "Add an itinerary." %}</h2>
+        {% else %}
+        <h2>{% translate "Update itinerary." %}</h2>
+        {% endif %}
+      </div>
+
+      {% csrf_token %}
+      
+      <div style='width:75vw; height:50vh;' id='mymap'>
+        Romani pe 2 roti map!
+      </div>
+      <div class="d-flex justify-content-between my-1">
+        <div class='d-flex justify-content-start w-100'>
+          <input class='form-control' type="text" id="search-input" placeholder="Search location">
+          <button class='btn btn-outline-secondary mx-1' onclick = 'searchLocation()' type="button" id="search-button">Search</button>
+        </div>
+        <div class='d-flex justify-content-end w-100'>
+          <button onclick = 'clearMarkers()' class='btn btn-outline-secondary'>Clear Route</button>
+        </div>
+      </div>
+
+      <div id="route-details"></div>
+
+      <!-- Hidden input fields for start_point, end_point, distance, travel_time -->
+      <input type="hidden" name="start_point" id="id_start_point" required>
+      <input type="hidden" name="end_point" id="id_end_point" required>
+      <input type="hidden" name="waypoints" id="id_waypoints">
+      <input type="hidden" name="distance" id="id_distance">
+      <input type="hidden" name="travel_time" id="id_travel_time">
+
+    {% for field in form %}
+      <div class="w-50 mx-auto my-3">
+        {% if field.label_tag %}
+          <div class="d-flex flex-column align-items-start mx-2 mb-1">
+            <small class="form-text text-muted">{{ field.label_tag }}</small>
+          </div>
+        {% endif %}
+
+        {% if field.name == 'image' and field.value.url %}
+          <img src="{{ field.value.url }}" alt="{{ field.value.name }}" class="img-fluid w-25 h-25 mx-auto my-1">
+          {{ field }}
+        {% else %}
+          {{ field }}
+        {% endif %}
+
+        {% if field.help_text %}
+          <div class="d-flex flex-column align-items-start mx-2 mt-1">
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+          </div>
+        {% endif %}
+
+        {% if field.errors %}
+          <div class="d-flex flex-column align-items-center mx-auto mt-2">
+            {% for error in field.errors %}
+              <small class="form-text-danger">{{ error }}</small>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+      
+      <button type="submit" id="saveButton" class="btn btn-outline-secondary w-50 h-100 mx-auto my-4" data-toggle="tooltip" data-placement="top" title="Add">
+        Save
+      </button>
+    </div>
+    <div class='d-flex justify-content-center mb-3'>
+      <a class="btn btn-outline-secondary w-50 btn-sm mx-4" href="{% url 'itinerary:itineraries' %}">
+        {% translate "Cancel" %}
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+  var APIKEY = '{{ api_key }}';
+  var markers = []
+  var locations = []
+
+  var map = tt.map({
+    key: APIKEY,
+    container: 'mymap',
+    center: [9.188540, 45.464664],
+    zoom: 4,
+  });
+
+  var routeDetailsContainer = document.getElementById('route-details');
+  var routeLayerId = 'route';
+
+  function clearMarkers() {
+    markers.forEach(function(marker) {
+      marker.remove();
+    });
+    markers = [];
+    
+    if (map.getLayer(routeLayerId) && map.getSource(routeLayerId)) {
+      map.removeLayer(routeLayerId);
+      map.removeSource(routeLayerId);
+    }
+    
+    routeDetailsContainer.innerHTML = '';
+  }
+
+  var moveMap = function(lnglat) {
+    map.flyTo({
+      center: lnglat,
+      zoom: 8
+    });
+  };
+
+  function addMarker(lngLat) {
+    var markerElement = document.createElement('div');
+    var markerIndex = markers.length;
+    markerElement.className = 'marker-container';
+
+    var deleteButton = document.createElement('button');
+    deleteButton.id = 'delete-marker-' + markerIndex;
+    deleteButton.className = 'delete-marker';
+    deleteButton.textContent = 'x';
+    deleteButton.onclick = function() {
+      deleteMarker(markerIndex);
+    };
+
+    var markerContainer = document.createElement('div');
+    markerContainer.className = 'marker-wrapper';
+    markerContainer.appendChild(markerElement);
+    markerContainer.appendChild(deleteButton);
+
+    var marker = new tt.Marker({
+      element: markerContainer,
+      anchor: 'bottom' // Set the anchor to the bottom corner of the marker
+    }).setLngLat(lngLat).addTo(map);
+
+    markers.push(marker);
+    calculateRoute();
+  }
+
+  function deleteMarker(index) {
+    markers[index].remove(); // Remove the marker from the map
+    markers.splice(index, 1); // Remove the marker from the markers array
+    calculateRoute(); // Recalculate the route
+
+    // Remove the "Delete" button element from the marker's parent container
+    var deleteButton = document.getElementById('delete-marker-' + index);
+    if (deleteButton && deleteButton.parentNode) {
+      deleteButton.parentNode.removeChild(deleteButton);
+    }
+  }
+
+  var calculatedLocations;
+
+  function calculateRoute() {
+    if (markers.length < 2) {
+      map.removeLayer(routeLayerId);
+      map.removeSource(routeLayerId);
+      routeDetailsContainer.innerHTML = '';
+      return;
+    }
+
+    var locations = markers.map(function(marker) {
+      return marker.getLngLat();
+    });
+
+    calculatedLocations = locations;
+
+    var routeOptions = {
+      key: APIKEY,
+      locations: locations,
+      travelMode: 'motorcycle',
+      routeType: 'eco',
+      traffic: true
+    };
+    console.log('locations in routeOptions : ', routeOptions)
+
+    createRoute(routeOptions);
+  }
+
+  function formatDistance(distance) {
+    if (distance < 1000) {
+      return distance + ' m';
+    } else {
+      return (distance / 1000).toFixed(1) + ' km';
+    }
+  }
+
+  function formatTravelTime(travelTimeInSeconds) {
+    var hours = Math.floor(travelTimeInSeconds / 3600);
+    var minutes = Math.floor((travelTimeInSeconds % 3600) / 60);
+    return hours + 'h ' + minutes + 'min';
+  }
+
+  map.on('click', function(event) {
+    if (event.originalEvent.target.classList.contains('delete-marker')) {
+      return; // Ignore the click event if the target is the "Delete" button
+    }
+    
+    addMarker(event.lngLat);
+    calculateRoute();
+  });
+
+  var createRoute = function(options) {
+    tt.services.calculateRoute(options).go().then(function(response) {
+      var geojson = response.toGeoJson();
+      console.log('console geojson', geojson);
+
+      if (map.getLayer(routeLayerId)) {
+        map.getSource(routeLayerId).setData(geojson);
+      } else {
+        map.addSource(routeLayerId, {
+          type: 'geojson',
+          data: geojson
+        });
+
+        map.addLayer({
+          id: routeLayerId,
+          type: 'line',
+          source: routeLayerId,
+          paint: {
+            'line-color': 'green',
+            'line-width': 6
+          }
+        });
+      }
+
+      // Calculate total distance and travel time
+      var totalDistance = response.routes && response.routes[0] ? response.routes[0].summary.lengthInMeters : 0;
+      var totalTravelTime = response.routes && response.routes[0] ? response.routes[0].summary.travelTimeInSeconds : 0;
+      var totalDistanceText = 'Total Distance: ' + formatDistance(totalDistance);
+      var totalTravelTimeText = 'Total Travel Time: ' + formatTravelTime(totalTravelTime);
+
+      // Calculate distance and travel time between each marker
+      var markerDetails = [];
+      markers.forEach(function(marker, index) {
+        if (index < markers.length - 1) {
+          var distance = response.routes && response.routes[0] && response.routes[0].legs && response.routes[0].legs[index] ? response.routes[0].legs[index].summary.lengthInMeters : 0;
+          var travelTime = response.routes && response.routes[0] && response.routes[0].legs && response.routes[0].legs[index] ? response.routes[0].legs[index].summary.travelTimeInSeconds : 0;
+          var distanceText = 'Distance from marker (' + (index + 1) + ' to ' + (index + 2) + '): ' + formatDistance(distance);
+          var travelTimeText = 'Travel Time from marker (' + (index + 1) + ' to ' + (index + 2) + '): ' + formatTravelTime(travelTime);
+          markerDetails.push(distanceText, travelTimeText);
+        }
+      });
+
+      var markerDetailsHtml = '<ul>';
+        markerDetails.forEach(function(detail) {
+          markerDetailsHtml += '<li>' + detail + '</li>';
+        });
+        markerDetailsHtml += '</ul>';
+        
+        document.getElementById('route-details').innerHTML = "<h5 class='my-auto text-muted'>" + totalDistanceText + ' | ' + totalTravelTimeText + '</h5>' + markerDetailsHtml;
+
+      // Wait for the route to be calculated, then access the total values and send the route data
+      setTimeout(function() {
+      }, 2000);
+
+      var form = document.getElementById('id_itinerary_form');
+      form.addEventListener('submit', function(event) {
+        // Check if start and end points are empty
+        var startInput = document.getElementById('id_start_point');
+        var endInput = document.getElementById('id_end_point');
+        startInput.value = calculatedLocations[0];
+        endInput.value = calculatedLocations[calculatedLocations.length - 1];
+        document.getElementById('id_waypoints').value = calculatedLocations.slice(1, calculatedLocations.length - 1).join(',');
+        document.getElementById('id_distance').value = formatDistance(totalDistance);
+        document.getElementById('id_travel_time').value = formatTravelTime(totalTravelTime);
+        if (startInput.value.trim() === '' || endInput.value.trim() === '') {
+          // Display an error message or perform other actions to indicate missing start/end points
+          alert('Please provide at least start and end points.');
+          event.preventDefault(); // Prevent form submission
+        }else {
+          // Submit the form
+          form.submit();
+        }
+      });
+    }).catch(function(error) {
+      console.log('Error calculating route:', error);
+    });
+  };
+
+  createRoute(routeOptions);
+
+var searchButton = document.getElementById('search-button');
+
+searchButton.addEventListener('click', function() {
+  searchLocation();
+});
+
+// Event listener for search input
+searchInput.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchLocation();
+    }
+});
+
+function searchLocation() {
+  var query = document.getElementById('search-input').value;
+
+  tt.services.fuzzySearch({
+    key: APIKEY,
+    query: query
+  })
+    .go()
+    .then(function(response) {
+      var results = response.results;
+      if (results && results.length > 0) {
+        var result = results[0];
+        var position = result.position;
+        var latitude = position.lat;
+        var longitude = position.lng;
+        var zoomLevel;
+
+        if (result.type === 'Street' || result.type === 'Via' || result.type === 'Strada' || result.type === 'soseaua' || result.type === 'bulevardul') {
+          zoomLevel = 20; // Street
+        } else if (result.type === 'POI') {
+          zoomLevel = 18; // Point of Interes
+        } else {
+          zoomLevel = 12; // Default zoom level
+        }
+
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: zoomLevel
+        });
+
+      }
+    })
+    .catch(function(error) {
+      console.log('Error searching location:', error);
+    });
+}
+
+
+</script>
+{% endblock javascripts %}

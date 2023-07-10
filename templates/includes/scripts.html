@@ -1,0 +1,33 @@
+<script>
+    var navbar = document.getElementById('navbar');
+    var prevScrollPos = window.pageYOffset;
+    var isScrollingUp = false;
+    
+    window.addEventListener('scroll', function() {
+      var currentScrollPos = window.pageYOffset;
+    
+      if (prevScrollPos > currentScrollPos) {
+        // Scrolling up
+        if (!isScrollingUp) {
+          isScrollingUp = true;
+          navbar.style.top = '0';
+          navbar.style.position = 'fixed';
+        }
+      } else {
+        // Scrolling down
+        if (isScrollingUp) {
+          isScrollingUp = false;
+          navbar.style.top = '-100px';
+          navbar.style.position = 'relative';
+        }
+      }
+    
+      if (currentScrollPos === 0) {
+        // Reached top of the page
+        navbar.style.position = 'relative';
+      }
+    
+      prevScrollPos = currentScrollPos;
+    });
+    
+</script>

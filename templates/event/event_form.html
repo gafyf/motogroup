@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %} {% translate "Add Event" %} {% endblock %}
+{% block content %}
+
+{{ form.media }}
+  
+<div class="d-flex justify-content-center">
+  <form method="POST" class="form-control bg-light" enctype='multipart/form-data'>
+    <div class="d-flex flex-column align-items-center mt-3">
+      <div class='text-secondary'>
+        {% if not event %}
+        <h2>{% translate "Add an event." %}</h2>
+        {% else %}
+        <h2>{% translate "Update event." %}</h2>
+        {% endif %}
+      </div>
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="w-50 mx-auto my-3">
+        {% if field.label_tag %}
+        <div class="d-flex flex-column align-items-start mx-2 mb-1">
+          <small class="form-text text-muted">{{ field.label_tag }}</small>
+        </div>
+        {% endif %}
+
+          {{ field }}
+
+        {% if field.help_text %}
+          <div class="d-flex flex-column align-items-start mx-2 mt-1">
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% for field in form %}
+      {% if field.errors %}
+      <div class="d-flex flex-column align-items-center mx-auto mt-2">
+        {% for error in field.errors %}
+          <small class="form-text-danger">{{ error }}</small>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endfor %}
+      <button type="submit" class="btn btn-outline-secondary w-50 h-100 mx-auto my-4" data-toggle="tooltip" data-placement="top" title="Add">
+        Save
+      </button>
+    </div>
+    <div class='d-flex justify-content-center mb-3'>
+      <a class="btn btn-outline-secondary w-50 btn-sm mx-4" href="{% url 'event:event_list' %}">
+        {% translate "Cancel" %}
+      </a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

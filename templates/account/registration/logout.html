@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block title %} {% translate "Logout" %} {% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center bg-light">
+    <div class="d-flex flex-column align-items-center">
+        <div class='text-secondary'>
+          <h2>{% translate "Perfect" %}</h2>
+          <br>
+          <p>{% translate "You have successfully logged out!" %}</p>
+        </div>
+        <div class='d-flex justify-content-center my-3'>
+            <a class="btn btn-outline-secondary btn-sm mx-4" href="{% url 'account:login' %}">
+              {% translate "Back to Login" %}
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

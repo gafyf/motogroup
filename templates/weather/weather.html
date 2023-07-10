@@ -1,0 +1,244 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Weather {% endblock %}
+
+{% block stylesheets %}
+ 
+  <style>
+    .custom-scroll {
+      max-height: 130px;
+      overflow-y: scroll;
+      scrollbar-width: thin; /* Width of the scrollbar - message form */
+      scrollbar-color: #888888 #f5f5f5; /* Color of the scrollbar - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px; /* Width of the scrollbar - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #888888; /* Color of the scrollbar thumb - message form */
+      border-radius: 4px; /* Rounded corners of the scrollbar thumb - message form */
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background-color: #555555; /* Color of the scrollbar thumb on hover - message form */
+    }
+
+    a {
+      text-decoration: none;
+    }
+    .col-add-event .text-warning:hover {
+      filter: invert(30%);
+    }
+  </style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div id='' class="row container-fluid justify-content-between pt-4 mx-1 mb-3">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4" style="">
+      <div class="card bg-light d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;">
+        <div class='d-flex justify-content-between'>
+            <div class=''>
+                <h4 class="text-warning h3 mx-5 mt-3" id='location_name_id'>
+                    {{ weather_data.location.name|default_if_none:""|title }}
+                </h4>
+                <h5 class='text-muted mx-3'>
+                    {{ weather_data.location.region|default_if_none:""|title }} - {{ weather_data.location.country|default_if_none:""|title }}
+                </h5>
+                <h5 class='text-muted small mx-3 mb-1 my-1'>
+                    {{ weather_data.location.localtime|default_if_none:"" }}
+                </h5>
+            </div>
+            <div class='mx-auto my-auto d-flex justify-content-center'>
+                <h1 class='text-muted bold'>
+                    {{ weather_data.current.temperature|default_if_none:""|title }}℃
+                </h1>
+            </div>
+        </div>
+        <div style="height: 100%; width: 100%; display: flex; align-items: center;">
+            <div class='mx-auto my-auto d-flex justify-content-center'>
+                <h5 class='my-auto mx-auto text-muted' id='current_condition_text_id'>
+                    {{ weather_data.current.condition.text|default_if_none:""|title }}
+                </h5>
+                <img id='image-url' class='img-fluid' style='max-height: 100%; max-width: 100%; object-fit: contain;' alt="Weather Icon" src="{{ weather_data.current.condition.icon|default_if_none:""|title }}">
+            </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex w-100 justify-content-end">
+            <div class="text-muted small mx-5">
+                Wind km/h : {{ weather_data.current.wind_kph }}
+            </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+            <div class="text-muted small mx-5">
+                Wind direction : {{ weather_data.current.wind_dir }}
+            </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+            <div class="text-muted small mx-5">
+                Wind degree : {{ weather_data.current.wind_degree }}
+            </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                    Pressure mb : {{ weather_data.current.pressure_mb }}
+                </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                    Precipitation mm : {{ weather_data.current.precip_mm }}
+                </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                    Humidity : {{ weather_data.current.humidity }}
+                </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                    Cloud : {{ weather_data.current.cloud }}
+                </div>
+            </li>
+            <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                    Feelslike C : {{ weather_data.current.feelslike_c }}
+                </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class='col-md-6 d-flex flex-column justify-content-end'>
+        <div class="card mb-4">
+            <div class="card-header-primary">
+                <form class='form-control' method="POST" action="{% url 'weather:weather' %}">
+                    {% csrf_token %}
+                    <label for="location" class="form-label">Location:</label>
+                    <div class'd-flex justify-content-between'>
+                        <input class='form-control w-50 mx-1' type="text" name="location" id="location" required>
+                        <button type="submit" class="btn btn-dark w-25 my-2 mx-1">Get Weather</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for forecast in weather_data.forecast %}
+            <div class="col">
+                <div class="card h-100">
+                  <div class='card-header d-flex justify-content-center max-w-auto my-auto' style="">
+                        <img id='image-url' class='img-fluid max-w-auto mx-auto my-auto' style='object-fit: contain;' alt="Event Image" src="{{ forecast.condition_icon|default_if_none:""|title }}">
+                        <h5 class="text-muted my-auto mx-auto">
+                            {{ forecast.date }}
+                        </h5>
+                  </div>
+                  <div class="card-body mx-auto">
+                        <h3 class="text-muted d-flex justify-content-center mt-1">
+                            {{ forecast.maxtemp }}°C 
+                        </h3>
+                        <h5 class="text-muted small d-flex justify-content-center mt-1">
+                            {{ forecast.condition_text }}
+                        </h5>
+                    <div class='custom-scroll mt-4'>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Min °C
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.mintemp|default_if_none:""|title }} °C
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Max °C
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.maxtemp|default_if_none:""|title }} °C
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Wind
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.maxwind|default_if_none:""|title }} km/h
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Precip
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.totalprecip_mm|default_if_none:""|title }} mm
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Snow
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.totalsnow_cm|default_if_none:""|title }} mm
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Humidity
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.avghumidity|default_if_none:""|title }} %
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Rain
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.daily_chance_of_rain|default_if_none:""|title }} %
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Snow
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.daily_chance_of_snow|default_if_none:""|title }} %
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Sunrise
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.sunrise|default_if_none:""|title }}
+                                </p>
+                            </li>
+                            <li class="list-group-item d-flex w-100 justify-content-between">
+                                <p class='mx-1'>
+                                    Sunset
+                                </p>
+                                <p class='mx-1'>
+                                {{ forecast.sunset|default_if_none:""|title }}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-1">
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

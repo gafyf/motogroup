@@ -1,0 +1,133 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% translate "Profile Details" %} {% endblock %}
+
+{% block content %}
+
+<center>
+{% if messages %}
+    {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show alert-sm" role="alert"{% endif %}>
+      {{ message }}
+      <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+</center>
+
+{% if user.is_authenticated %}
+
+    <div id='' class="row container-fluid justify-content-between pt-4 mx-1 mb-3">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4" style="min-height: 200px; max-height: 415px; min-width: 200px; max-width: 410px;">
+        <div class="card bg-light d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;">
+
+          {% if profile.image %}
+          <a class="image-link" href="{{ profile.image.url }}" style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <img id='image-url' class='img-fluid' style='max-height: 100%; max-width: 100%; object-fit: contain;' alt="Profile Image" src="{{ profile.image.url }}">
+          </a>
+          {% else %}
+          <!-- Placeholder or alternative content when there is no image -->
+          <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <form method="post" id="image-upload-form" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{form.image}}
+              <div style="position: absolute; bottom: 0; right: 0;">
+                <div class='mx-4 my-3'>
+                  <button type="submit" class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="top" title="Upload an image for your profile">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class='col-md-6 d-flex flex-column justify-content-end'>
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">
+              Details
+            </h4>
+            <div class="card-subtitle">
+              <h5 class='text-warning h3'>{{ user.email }}!</h5>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class='mx-5'>
+                {% translate "Last Name" %}: 
+                </h5>
+                <h5 class='mx-5'>
+                {{ profile.user.last_name|default_if_none:""|title }}
+                </h5>
+              </li>
+              <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class='mx-5'>
+                  {% translate "First Name" %}: 
+                </h5>
+                <h5 class='mx-5'>
+                {{ profile.user.first_name|default_if_none:""|title }}
+                </h5>
+              </li>
+              <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class='mx-5'>
+                  {% translate "County" %}: 
+                </h5>
+                <h5 class='mx-5'>
+                  {{ profile.county|default_if_none:""|title }}
+                </h5>
+              </li>
+              <li class="list-group-item d-flex w-100 justify-content-between">
+                <h5 class='mx-5'>
+                  {% translate "Town" %}: 
+                </h5>
+                <h5 class='mx-5'>
+                  {{ profile.town|default_if_none:""|title }}
+                </h5>
+              </li>
+              <li class="list-group-item d-flex w-100 justify-content-end">
+                <div class="text-muted small mx-5">
+                  {% translate "Created at" %}: {{ profile.created_at|date:"d.m.Y" }}
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer d-flex my-1">
+            {% if user.is_superuser or user.profile.id == profile.id %}
+            <a class="btn btn-outline-secondary btn-sm h-100 w-100" href="{% url 'account:edit_profile' profile.id %}">
+              Edit Profile
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+      </div>
+    </div>
+    <div class='container-fluid'>
+      <div id='' class="row container-fluid justify-content-center pt-4 mx-1 mb-3">
+        <div class="col-md-12" style="min-height: 200px; max-height: 600px; min-width: 81.5%; max-width: 81.5%;">
+          <div class='card'>
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">
+                Your Description
+              </h4>
+            </div>
+            <div class="card-body" style='min-height: 150px;'>
+              <h6 class='mx-2 my-1 small'>
+                {{ profile.description|default_if_none:"Enter your description..."|linebreaksbr }}
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% translate "Delete User" %} {% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center">
+  <form method="POST" class="form-control bg-light">
+    <div class="d-flex flex-column align-items-center">
+      <div class='text-secondary'>
+        <h2>{% translate "Confirm delete User" %}</h2>
+      </div>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="w-50 mx-auto my-3">
+          {% if field.label_tag %}
+          <div class="d-flex flex-column align-items-start mx-2 mb-1">
+            <small class="form-text text-muted">{{ field.label_tag }}</small>
+          </div>
+          {% endif %}
+          
+          {{ field }}
+
+          {% if field.help_text %}
+            <div class="d-flex flex-column align-items-start mx-2 mt-1">
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% for field in form %}
+        {% if field.errors %}
+        <div class="d-flex flex-column align-items-center mx-auto mt-2">
+          {% for error in field.errors %}
+            <small class="form-text-danger">{{ error }}</small>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
+      <button type="submit" class="btn btn-outline-danger w-50 h-100 mx-auto my-4" data-toggle="tooltip" data-placement="top" title="Delete">
+        Delete User
+      </button>
+      <hr>
+      <a class="btn btn-outline-secondary" href="{% url 'account:password_reset' %}">{% translate "I forgot my password" %}</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

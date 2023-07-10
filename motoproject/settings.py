@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from decouple import Config
+from decouple import config
 import os
 from django.utils.translation import gettext_lazy as _
 
@@ -39,16 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'useri',
-    'blog',
-    'galleria',
-    'ospite',
-    'itinerario',
-    'evento',
-    'novita',
+    'home',
+    'account',
+    'weather',
+    'gallery',
+    'guest',
+    'itinerary',
+    'event',
+    'new',
     'django.contrib.admin',
     'django.contrib.auth',
     'rosetta',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'motoproject.urls'
@@ -117,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'it'
+LANGUAGE_CODE = 'en'
 
 LANGUAGES = (
     ('it', _('Italiano')),
@@ -142,7 +146,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
@@ -150,3 +154,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'account.User'
+
+LOGIN_URL = "/{}/account/login".format(LANGUAGE_CODE)
+LOGOUT_REDIRECT_URL = "/{}/account/login".format(LANGUAGE_CODE)
+LOGIN_REDIRECT_URL = "/{}/".format(LANGUAGE_CODE)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'gafyf19@gmail.com'
+EMAIL_HOST_USER = 'gafyf19@gmail.com'
+EMAIL_HOST_PASSWORD = 'ellscvcyapzrffzf'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 300
+
+CSRF_COOKIE_NAME = 'csrftoken'
+
+WEATHER_API_KEY = config('WEATHER_API_KEY')
+TOMTOM_API_KEY = config('TOMTOM_API_KEY')
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:8000',  # Add your frontend origin here
+# ]

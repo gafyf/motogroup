@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}  {% translate "Edit User" %}  {% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center bg-light">
+    <div class="d-flex flex-column align-items-center my-4">
+        <h4 class='text-secondary my-3'>
+            {% translate "Settings account" %}: {{ user }}
+        </h4>
+        <a class="btn btn-outline-secondary btn-sm w-50 h-100 mx-auto my-4" href="{% url 'account:password_change_form' %}">
+            {% translate "Change password" %}
+        </a>
+        <a class="btn btn-outline-danger btn-sm w-50 h-100 mx-auto my-4" href="{% url 'account:delete_profile' user.profile.id %}">
+            {% translate "Delete User" %}
+        </a>
+    </div>
+</div>
+
+{% comment %} <form method='POST' class='form-control' enctype='multipart/form-data'>
+    {% csrf_token %}
+        {{form.as_p}}
+    <input type="submit" class="btn btn-secondary" value='Modify User'></input>
+</form> {% endcomment %}
+{% endblock %} 
+

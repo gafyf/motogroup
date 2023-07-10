@@ -2,23 +2,21 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
-from . import views
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin:index'),
 ]
 
 urlpatterns += i18n_patterns (
-    path('', views.main, name='main'),
-    path("cerca/", views.cerca, name="cerca"),
-    path('useri/', include('useri.urls')),
-    path('blog/', include('blog.urls')),
-    path('galleria/', include('galleria.urls')),
-    path('ospite/', include('ospite.urls')),
-    path('itinerario/', include('itinerario.urls'), verbose_name='itinerari'),
-    path('evento/', include('evento.urls'), verbose_name='eventi'),
-    path('novita/', include('novita.urls')),
+    path('', include('home.urls')),
+    path('account/', include('account.urls')),
+    path('weather/', include('weather.urls')),
+    path('gallery/', include('gallery.urls')),
+    path('guest/', include('guest.urls')),
+    path('itinerary/', include('itinerary.urls')),
+    path('event/', include('event.urls')),
+    path('new/', include('new.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

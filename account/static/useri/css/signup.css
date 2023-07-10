@@ -1,0 +1,41 @@
+h2.titlu {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+form.form-control {
+    background:none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+p {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+label {
+    text-align: right;
+    margin-right: 5px;
+    display: inline-block;
+    width: 30%;
+}
+
+input.form-control {
+    display: inline-block;
+    width: 50%;
+}
+
+/* input#id_username [data-toggle="tooltip"] [data-placement="top"] [title="Inregistreaza"] */
+/* input#id_password1 [type='password'] */
+/* form.form-control input#id_password2 [type='password'] */
+
+button.btn.btn-secondary {
+    text-align: center;
+    margin-left: 59.7%;
+}

@@ -1,0 +1,294 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% translate "Itinerary Details" %} {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/maps/maps.css"/>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/maps/maps-web.min.js"></script>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/services/services-web.min.js"></script>
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox-web.js"></script>
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox.css"/>
+
+<style>
+
+</style>
+
+<center>
+{% if messages %}
+    {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show alert-sm" role="alert"{% endif %}>
+      {{ message }}
+      <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+</center>
+
+    <div id='' class="row container-fluid d-flex justify-content-center pt-4 mx-auto mb-3">
+      <div class="col-md-1">
+      </div>
+      <div class='col-md-10 d-flex justify-content-center'>
+        <div class="card">
+          <div class="card-header card-header-primary d-flex justify-content-between my-auto">
+            <h3 class="card-title my-4 mx-4">
+            {{ itinerary.name|default_if_none:""|title }}
+            </h3>
+            <div class="card-subtitle text-muted">
+              {% if user.is_authenticated %}
+                <div class='my-1 w-100 d-flex justify-content-end'>
+                  <a class="btn btn-outline-secondary btn-sm" href="{% url 'itinerary:update_itinerary' itinerary.id %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                    </svg>
+                    Edit
+                  </a>
+                </div>
+              {% endif %}
+              <div class='mt-4 small'>
+                Created by: {{ itinerary.created_by }}
+                at: {{ itinerary.created_at|date:"d/m/Y H:i" }}
+              </div>
+              {% if itinerary.updated_by != itinerary.created_by and itinerary.updated_by != None %}
+              <div class='small'>
+                Updated by: {{ itinerary.updated_by }}
+                at: {{ itinerary.updated_at|date:"d/m/Y H:i" }}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-header card-header-primary d-flex justify-content-between">
+              <div class="col-md-4" style="min-height: 200px; max-height: 415px; min-width: 200px; max-width: 410px;">
+                <div class="card bg-light d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;">
+                  <a class="image-link" href="{{ itinerary.image.url }}" style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div class="card text-bg-dark">
+                      <img id='image-url' class='img-fluid card-img' style='max-height: 100%; max-width: 100%; object-fit: contain;' alt="Event Image" src="{{ itinerary.image.url }}">
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush w-100 mx-1">
+                <li class="list-group-item d-flex w-100 justify-content-between">
+                  <h5 class='mx-5'>
+                  {% translate "Start point" %}: 
+                  </h5>
+                  <h5 class='mx-5'>
+                  {{ start_location|title }}
+                  </h5>
+                </li>
+                <li class="list-group-item d-flex w-100 justify-content-between">
+                  <h5 class='mx-5'>
+                    {% translate "End point" %}: 
+                  </h5>
+                  <h5 class='mx-5'>
+                    {{ end_location|title }}
+                  </h5>
+                </li>
+                <li class="list-group-item d-flex w-100 justify-content-between">
+                  <h5 class='mx-5'>
+                    {% translate "Distance" %}: 
+                  </h5>
+                  <h5 class='mx-5'>
+                    {{ itinerary.distance|title }}
+                  </h5>
+                </li>
+                <li class="list-group-item d-flex w-100 justify-content-between">
+                  <h5 class='mx-5'>
+                    {% translate "Travel time" %}: 
+                  </h5>
+                  <h5 class='mx-5'>
+                    {{ itinerary.travel_time|title }}
+                  </h5>
+                </li>
+                <li class="list-group-item d-flex w-100 justify-content-between">
+                  <form class="form-control px-auto py-auto d-flex justify-content-between" method="post" action="{% url 'itinerary:itinerary_vote' itinerary.id %}">
+                    {% csrf_token %}
+                    <div>
+                      <button class="btn" type="submit" name="like" data-toggle="tooltip" data-placement="top" title="Add Like">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="{% if user.profile in itinerary.liked_by.all %}blue{% else %}currentColor{% endif %}" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                          <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+                        </svg>
+                        {{ itinerary.likes }}
+                      </button>
+                      <button class="btn" type="submit" name="dislike" data-toggle="tooltip" data-placement="top" title="Dislike">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="{% if user.profile in itinerary.disliked_by.all %}dark-grey{% else %}currentColor{% endif %}" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
+                          <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856 0 .289-.036.586-.113.856-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a9.877 9.877 0 0 1-.443-.05 9.364 9.364 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964l-.261.065zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a8.912 8.912 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581 0-.211-.027-.414-.075-.581-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.224 2.224 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.866.866 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1z"/>
+                        </svg>
+                        {{ itinerary.dislikes }}
+                      </button>
+                    </div>
+                    <div class="text-muted small mx-5">
+                      {% if itinerary.winter_stats == True  %}
+                      <h5 class="card-text mx-auto my-auto">Winter Closed</h5>
+                      {% else %}
+                      <h5 class="card-text mx-auto my-auto">Winter Open</h5>
+                      {% endif %}
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body" style='min-height: 150px;'>
+              <div class="d-flex w-100 justify-content-between">
+                <h4 class='mx-5 my-auto text-muted'>
+                  {% translate "Waypoints" %}: 
+                </h4>
+                <ol>
+                  {% for waypoint in waypoints_locations %}
+                  <li class='mx-5 my-auto'>
+                    {{ waypoint }}
+                  </li>
+                  {% endfor %}
+                </ol>
+              </div>
+              <hr>
+              <h4 class='mx-5 my-2 text-muted'>
+                {% translate "Description" %}
+              </h4>
+              <h6 class='mx-2 my-4'>
+                  {{ itinerary.description|default_if_none:""|linebreaksbr }}
+              </h6>
+              <hr>
+
+              {% comment %} <div class='mx-auto my-auto d-flex justify-content-center'> {% endcomment %}
+                <h4 class='mx-5 my-2 text-muted w-100'>
+                  {% translate "Places to visit" %}
+                </h4>
+                <h6 class='mx-2 my-4'>
+                    {{ itinerary.places_to_visit|default_if_none:""|linebreaksbr }}
+                </h6>
+                <hr>
+              {% comment %} </div> {% endcomment %}
+
+              {% comment %} <div class='mx-auto my-auto d-flex justify-content-center'> {% endcomment %}
+                <h4 class='mx-5 my-2 text-muted'>
+                  {% translate "Places to eat" %}
+                </h4>
+                <h6 class='mx-2 my-4'>
+                    {{ itinerary.places_to_eat|default_if_none:""|linebreaksbr }}
+                </h6>
+                <hr>
+              {% comment %} </div> {% endcomment %}
+              {% comment %} <div class='mx-auto my-auto d-flex justify-content-center'> {% endcomment %}
+                <h4 class='mx-5 my-2 text-muted'>
+                  {% translate "Places to sleep" %}
+                </h4>
+                <h6 class='mx-2 my-4'>
+                    {{ itinerary.places_to_sleep|default_if_none:""|linebreaksbr }}
+                </h6>
+              {% comment %} </div> {% endcomment %}
+            </div>
+            <div class="card-footer d-flex my-1">
+              <div style='width:100vw; height:50vh;' id="map"></div>
+              <div id="route-details"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+      </div>
+    </div>
+
+    <script>
+      var APIKEY = '{{ api_key }}';
+
+      var start_point = {{ start_point_map|safe }};
+      var end_point = {{ end_point_map|safe }};
+
+      var start_latitude = parseFloat(start_point[0]);
+      var start_longitude = parseFloat(start_point[1]);
+
+      var end_latitude = parseFloat(end_point[0]);
+      var end_longitude = parseFloat(end_point[1]);
+
+      console.log(start_latitude, start_longitude);
+      console.log(end_latitude, end_longitude);
+
+      var routeCoordinates = [];
+      routeCoordinates.push([start_longitude, start_latitude]);
+
+      // Create the map
+      var map = tt.map({
+          key: APIKEY,
+          container: 'map',
+          center: [start_longitude, start_latitude],
+          zoom: 7,
+      });
+
+      // Zoom map to display start and end points
+      var bounds = tt.LngLatBounds.convert([[start_longitude, start_latitude], [end_longitude, end_latitude]]);
+      map.fitBounds(bounds, { padding: 100 }); // Adjust padding as needed
+
+      addMarker([start_longitude, start_latitude], '/media/motorcycle_1.png');
+      addMarker([end_longitude, end_latitude], '/media/motorcycle_1.png');
+
+      var waypoints = {{ waypoints_latlng|safe }};
+
+      for (var i = 0; i < waypoints.length; i++) {
+        var waypoint = waypoints[i];
+        var [lat, lng] = waypoint.split(',').map(Number);
+        console.log(lat, lng);  // Access the latitude and longitude values
+        addMarker([lng, lat], '/media/motorcycle_1.png');
+        routeCoordinates.push([lng, lat]);
+      }
+
+      routeCoordinates.push([end_longitude, end_latitude]);
+
+      function addMarker(coords, icon) {
+        var marker = new tt.Marker({
+          draggable: false,
+          element: createMarkerElement(icon)
+        }).setLngLat(coords).addTo(map);
+      }
+      
+      function createMarkerElement(icon) {
+        var markerElement = document.createElement('div');
+        markerElement.style.backgroundImage = `url(${icon})`;
+        markerElement.style.width = '24px';
+        markerElement.style.height = '24px';
+        markerElement.style.backgroundSize = 'cover';
+        markerElement.style.position = 'absolute';
+        return markerElement;
+      }
+
+      console.log(routeCoordinates)
+
+      var routeOptions = {
+        key: APIKEY,
+        locations: routeCoordinates,
+        travelMode: 'motorcycle',
+        routeType: 'eco',
+        traffic: true
+      };
+
+      map.on('style.load', function() {
+        // Style has finished loading, you can now calculate and display the route
+        tt.services
+          .calculateRoute(routeOptions)
+          .go()
+          .then(function(response) {
+            var route = response.toGeoJson();
+            map.addLayer({
+              id: 'route',
+              type: 'line',
+              source: {
+                type: 'geojson',
+                data: route
+              },
+              paint: {
+                'line-color': 'green',
+                'line-width': 6
+              }
+            });
+          })
+          .catch(function(error) {
+            console.log('Error calculating route:', error);
+          });
+      });
+      
+    
+    </script>
+  
+  
+{% endblock %}

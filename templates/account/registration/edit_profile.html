@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% translate "Edit Profile" %} {% endblock %}
+
+{% block content %}
+<div class='user_head'>
+    <p> {% translate "Change profile data." %}
+
+
+    </p>
+</div>
+
+<div id='' class="row container-fluid justify-content-between pt-4 mx-1 my-3">
+    <div class="col-md-1">
+    </div>
+    {% comment %} <div class="col-md-4" style="min-height: 200px; max-height: 445px; min-width: 200px; max-width: 410px;">
+        <div class="card bg-light d-flex justify-content-center" style="height: 100%; width: 100%; object-fit: contain;">
+            {% if profile.image %}
+            <a class="image-link" href="{{ profile.image.url }}" style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <img class='img-fluid' style='max-height: 100%; max-width: 100%; object-fit: contain;' alt="Profile Image" src="{{ profile.image.url }}">
+            </a>
+            {% else %}
+            <!-- Placeholder or alternative content when there is no image -->
+            <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <a href="#" class="btn btn-light">Upload an image for your profile</a>
+            </div>
+            {% endif %}
+        </div>
+    </div> {% endcomment %}
+    <div class="col-md-8">
+        <div class='card'>
+            <div class='card-header'>
+                <div class='card-title mt-3 d-flex justify-content-between'>
+                    <h4 class='mx-3 my-auto'>
+                        Edit your details
+                    </h4>
+                    <a class="btn btn-secondary-outline btn-sm" href="{% url 'account:edit_user' profile.id %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
+                            <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class='card-body my-3'>
+                <form method='POST' class='form-control' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <p>{{ form.last_name.label }} {{form.last_name}}</p>
+                    <p>{{ form.first_name.label }}{{form.first_name}}</p>
+                    <p>{{ form.county.label }}{{form.county}}</p>
+                    <p>{{ form.town.label }}{{form.town}}</p>
+                    <p>{{ form.description.label }}{{form.description}}</p>
+                    <p>
+                        <div class='bg-light d-flex justify-content-center' style="">
+                            <div class="card">
+                                {% if profile.image %}
+                                <a class="image-link" href="{{ profile.image.url }}" style="max-height: 200px; max-width: 200px; margin: auto;">
+                                    <img class="img-fluid card-body" style="max-height: 200px; max-width: 200px; object-fit: contain;" alt="Profile Image" src="{{ profile.image.url }}">
+                                </a>
+                                {% else %}
+                                <!-- Placeholder or alternative content when there is no image -->
+                                <div style="max-height: 150px; max-width: 150px; display: flex; align-items: center; justify-content: center; margin: auto;">
+                                    <span>No image available</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="my-auto mx-1" style="opacity: 0.95;">
+                                <label for="{{ form.image.id_for_label }}" class="btn btn-light" style="max-width: 125px; max-height: 150px;">
+                                    {{ form.image }}
+                                </label>
+                            </div>
+                        </div>
+                    </p>
+                    <p>
+                        <div class='bg-light'>
+                            <input type="submit" class="btn btn-outline-secondary w-100 mt-2" style='' value='Modify'></input>
+                        </div>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+    </div>
+</div>
+{% endblock %} 
+
