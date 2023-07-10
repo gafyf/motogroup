@@ -29,7 +29,7 @@ SECRET_KEY = Config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = Config('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -161,13 +161,13 @@ LOGIN_URL = "/{}/account/login".format(LANGUAGE_CODE)
 LOGOUT_REDIRECT_URL = "/{}/account/login".format(LANGUAGE_CODE)
 LOGIN_REDIRECT_URL = "/{}/".format(LANGUAGE_CODE)
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'gafyf19@gmail.com'
-EMAIL_HOST_USER = 'gafyf19@gmail.com'
-EMAIL_HOST_PASSWORD = 'ellscvcyapzrffzf'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_FROM = config('EMAIL_FROM')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 
 PASSWORD_RESET_TIMEOUT = 300
 
