@@ -49,11 +49,13 @@
               Gallery
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item text-warning" href="#">Motorcycles</a></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'gallery:gallery' %}?title=Motorcycles">Motorcycles</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-warning" href="#">Events</a></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'gallery:gallery' %}?title=Events">Events</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-warning" href="#">Places</a></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'gallery:gallery' %}?title=Places">Places</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'gallery:gallery' %}">All Albums</a></li>
               <li><hr class="dropdown-divider"></li>
             </ul>
           </li>
