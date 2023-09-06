@@ -4,6 +4,24 @@
 {% block title %} {% translate "Profile Details" %} {% endblock %}
 
 {% block content %}
+<style>
+  .list-group-item h5 {
+    margin-left: 2rem; /* Set a default margin for h5 elements */
+    margin-right: 2rem; /* Set a default margin for h5 elements */
+  }
+  
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+
+    .card-header {
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+    }
+    .list-group-item h5 {
+      margin-left: 1rem; /* Reduce the margin for h5 elements to mx-1 */
+    }
+  }
+</style>
 
 <center>
 {% if messages %}
@@ -60,34 +78,34 @@
           <div class="card-body">
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex w-100 justify-content-between">
-                <h5 class='mx-5'>
+                <h5>
                 {% translate "Last Name" %}: 
                 </h5>
-                <h5 class='mx-5'>
+                <h5>
                 {{ profile.user.last_name|default_if_none:""|title }}
                 </h5>
               </li>
               <li class="list-group-item d-flex w-100 justify-content-between">
-                <h5 class='mx-5'>
+                <h5>
                   {% translate "First Name" %}: 
                 </h5>
-                <h5 class='mx-5'>
+                <h5>
                 {{ profile.user.first_name|default_if_none:""|title }}
                 </h5>
               </li>
               <li class="list-group-item d-flex w-100 justify-content-between">
-                <h5 class='mx-5'>
+                <h5>
                   {% translate "County" %}: 
                 </h5>
-                <h5 class='mx-5'>
+                <h5>
                   {{ profile.county|default_if_none:""|title }}
                 </h5>
               </li>
               <li class="list-group-item d-flex w-100 justify-content-between">
-                <h5 class='mx-5'>
+                <h5>
                   {% translate "Town" %}: 
                 </h5>
-                <h5 class='mx-5'>
+                <h5>
                   {{ profile.town|default_if_none:""|title }}
                 </h5>
               </li>
@@ -111,7 +129,7 @@
       </div>
     </div>
     <div class='container-fluid'>
-      <div id='' class="row container-fluid justify-content-center pt-4 mx-1 mb-3">
+      <div id='description-id' class="row container-fluid justify-content-center pt-4 mx-1 mb-3">
         <div class="col-md-12" style="min-height: 200px; max-height: 600px; min-width: 81.5%; max-width: 81.5%;">
           <div class='card'>
             <div class="card-header card-header-primary">

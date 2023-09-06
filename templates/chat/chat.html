@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% translate "Virtual mechanic" %} {% endblock %}
+
+{% block content %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Send Message</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+
+                  <div class="modal-body">
+                    <div class="paragrafe" id='paragrafe'>
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <form class='my-auto mx-auto'>
+                      <div class="form-group my-auto mx-auto">
+                          <input type="text" class="form-control" id="message" placeholder="Ask me something about your motorcycle...">
+                      </div>
+                    </form>
+                    <button type="button" id='send-button' class="btn btn-primary" onclick="sendMessage()">Send</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for the modal to work) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#termsModal').modal('show');
+        function sendMessage() {
+            var messageInput = document.getElementById("message").value;
+            // Do something with the message, e.g., send it to the server
+            console.log("Message sent:", messageInput);
+            if (messageInput.length > 0) {
+              var now = new Date();
+              $.ajax({
+                url: "{% url 'chat:send_message' %}",
+                type: "POST",
+                data: {
+                message: messageInput
+                },
+                dataType: "json",
+                success: function(response) {
+                  for (var key in response) {
+                    console.log(response[key]);
+                    var msg = $("<p>").addClass("paragraf").text(response[key]);
+                    $("#paragrafe").append(msg);
+                  }
+                }
+              })
+            }
+          }
+    </script>
+
+{% endblock %}
+

@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = Config('DEBUG')
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'itinerary',
     'event',
     'new',
+    'chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'rosetta',
@@ -173,9 +174,12 @@ PASSWORD_RESET_TIMEOUT = 300
 
 CSRF_COOKIE_NAME = 'csrftoken'
 
+
 WEATHER_API_KEY = config('WEATHER_API_KEY')
 TOMTOM_API_KEY = config('TOMTOM_API_KEY')
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:8000',  # Add your frontend origin here
 # ]
+
+CSRF_TRUSTED_ORIGINS = ['https://2871-2a02-b023-12-8423-b48c-f556-d807-35d1.ngrok-free.app']

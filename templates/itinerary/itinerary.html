@@ -11,7 +11,30 @@
 <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox.css"/>
 
 <style>
+  .list-group-item h5 {
+    margin-left: 2rem; /* Set a default margin for h5 elements */
+    margin-right: 2rem; /* Set a default margin for h5 elements */
+  }
+  
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
 
+    .card-header {
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+    }
+    .list-group-item h5 {
+      margin-left: 1rem; /* Reduce the margin for h5 elements to mx-1 */
+    }
+    .form-control{
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+    }
+    .waypoints-class{
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+    }
+  }
 </style>
 
 <center>
@@ -70,34 +93,34 @@
               </div>
               <ul class="list-group list-group-flush w-100 mx-1">
                 <li class="list-group-item d-flex w-100 justify-content-between">
-                  <h5 class='mx-5'>
+                  <h5>
                   {% translate "Start point" %}: 
                   </h5>
-                  <h5 class='mx-5'>
+                  <h5>
                   {{ start_location|title }}
                   </h5>
                 </li>
                 <li class="list-group-item d-flex w-100 justify-content-between">
-                  <h5 class='mx-5'>
+                  <h5>
                     {% translate "End point" %}: 
                   </h5>
-                  <h5 class='mx-5'>
+                  <h5>
                     {{ end_location|title }}
                   </h5>
                 </li>
                 <li class="list-group-item d-flex w-100 justify-content-between">
-                  <h5 class='mx-5'>
+                  <h5>
                     {% translate "Distance" %}: 
                   </h5>
-                  <h5 class='mx-5'>
+                  <h5>
                     {{ itinerary.distance|title }}
                   </h5>
                 </li>
                 <li class="list-group-item d-flex w-100 justify-content-between">
-                  <h5 class='mx-5'>
+                  <h5>
                     {% translate "Travel time" %}: 
                   </h5>
-                  <h5 class='mx-5'>
+                  <h5>
                     {{ itinerary.travel_time|title }}
                   </h5>
                 </li>
@@ -130,7 +153,7 @@
               </ul>
             </div>
             <div class="card-body" style='min-height: 150px;'>
-              <div class="d-flex w-100 justify-content-between">
+              <div class="waypoints-class d-flex w-100 justify-content-between">
                 <h4 class='mx-5 my-auto text-muted'>
                   {% translate "Waypoints" %}: 
                 </h4>

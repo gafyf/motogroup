@@ -17,6 +17,7 @@ urlpatterns += i18n_patterns (
     path('itinerary/', include('itinerary.urls')),
     path('event/', include('event.urls')),
     path('new/', include('new.urls')),
+    path('chat/', include('chat.urls')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

@@ -32,9 +32,9 @@
         </div>
         <div class="card-footer">
           {% if image.description %}
-          <h5 class="card-subtitle">
-            {{ image.description }}
-          </h5>
+          <p class="card-subtitle">
+            {{ image.description|linebreaksbr }}
+          </p>
           {% endif %}
         </div>
         <form class="card-footer px-5 d-flex justify-content-between" method="post" action="{% url 'gallery:image_vote' image.id %}">

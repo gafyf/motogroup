@@ -39,10 +39,10 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
           {% for album in page_obj %}
           <div class="col">
-            <a class="text-dark" href="{{ album.get_absolute_url }}" style="">
+            <a class="text-dark" href="{{ album.get_absolute_url }}" style="text-decoration: none;">
               <div class="card h-100">
                 <div class='card-header d-flex justify-content-center max-w-auto my-auto' style="min-height: 250px; max-height: 300px;">
-                    <img id='image-url' class='img-fluid max-w-auto mx-auto my-auto' style='min-height: 190px; max-height: 190px; object-fit: contain;' alt="Album Image" src="{{ album.images.first.image.url }}">
+                    <img id='image-url' class='img-fluid max-w-auto mx-auto my-auto' style='min-height: 190px; max-height: 190px; object-fit: contain;' alt="Album Image" src="{{ album.images.last.image.url }}">
                 </div>
                 <div class="card-body">
                   <h5 class="card-title d-flex justify-content-center mw-auto my-auto">{{ album.title|title }}</h5>
