@@ -1,0 +1,60 @@
+
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  {% if new.title %}
+    {{ new.title }} 
+  {% else %}
+    New
+  {% endif %}
+{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div id='new-container-id' class="row container-fluid justify-content-between pt-4 mx-1">
+  <div class='col-md-1'>
+  </div>
+  <div id='new-id' class="col-md-8 d-flex flex-column justify-content-end">
+    <div class="flex-grow-1 overflow-auto">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          {% if new.title %}
+          <h4 class="card-title">
+            {{ new.title }}
+          </h4>
+          {% endif %}
+        </div>
+        <div class="card-header">
+            <img src="{{ new.image.url }}" alt="{{ new.title }}"  style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <div class="card-body">
+          {% if new.description %}
+          <p class="card-subtitle">
+            {{ new.description|linebreaksbr }}
+          </p>
+          {% endif %}
+          <hr>
+          {% if new.text %}
+          <p class="my-2 card-subtitle">
+            {{ new.text|linebreaksbr }}
+          </p>
+          {% endif %}
+        </div>
+        <div class="card-footer">
+            {{ new.created_at|date:"d/m/Y" }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='col-md-1'>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

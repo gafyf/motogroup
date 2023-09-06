@@ -31,15 +31,15 @@
   <div class="card-body">
     <form class="form-control" role="form" method="post" action="">
       {% csrf_token %} 
-      <div class="mb-5">
+      <div class="mb-4">
         <label for="DropdownFormEmail" class="form-label">Email</label>
         {{ form.email }}
       </div>
-      <div class="mb-5">
+      <div class="mb-4">
         <label for="DropdownFormName" class="form-label">Name</label>
         {{ form.name }}
       </div>
-      <div class="mb-5">
+      <div class="mb-3">
         <label for="FormControlTextarea" class="form-label">Your message</label>
         {{ form.text }}
       </div>

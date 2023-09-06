@@ -9,14 +9,31 @@
       /* Set styles for the footer */
       margin-top: 50px; /* Adjust this value to match the height of the fixed form */
     }
+    .fixed-form{
+      position:fixed; 
+      top:125px; 
+      bottom:100px;
+    }
+
+    @media (max-width: 800px) {
+      /* Adjust the minimum size for smaller screens */
+      .fixed-form{
+        top:20px;
+        bottom:20px;
+        position:relative;
+      }
+      .div-form-class{
+        margin-bottom:50px;
+      }
+    }
   </style>
 {% endblock stylesheets %}
 
 {% block content %}
 
     <div id='message-container-id' style='min-height: 100vh;' class="row container-fluid justify-content-between pt-4 mx-1">
-      <div class='col-md-4 d-flex flex-column justify-content-start'>
-        <div id='message-form-id' class="fixed-form" style='position:fixed; top:125px; bottom:100px;'>
+      <div class='div-form-class col-md-4 d-flex flex-column justify-content-start'>
+        <div id='message-form-id' class="fixed-form">
           <div class="card" id='card-message-id'>
           {% include 'guest/message.html' %}
           </div>

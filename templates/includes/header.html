@@ -18,6 +18,16 @@
     line-height: 30px; /* Vertically center the content */
     background-color: rgba(0, 0, 0, 0.8);
   }
+
+  @media (max-width: 800px) {
+    /* Invert the color of the menu button for small screens */
+    #navbar .navbar-toggler {
+      filter: invert(100%); /* Invert the color of the icon */
+    }
+    #navbar .navbar-toggler-icon {
+      filter: invert(100%); /* Invert the color of the icon */
+    }
+  }
 </style>
 
 <nav class="navbar navbar-expand-lg container-fluid bg-dark" id='navbar'>
@@ -81,9 +91,11 @@
               News
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item text-warning" href="#">MotoGP</a></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'new:new' %}?title=MotoGP">MotoGP</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-warning" href="#">Dakar</a></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'new:new' %}?title=Dakar">Dakar</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-warning" href="{% url 'new:new' %}">All News</a></li>
               <li><hr class="dropdown-divider"></li>
             </ul>
           </li>
@@ -130,7 +142,7 @@
           </li>
 
           <li class="nav-item h5">
-            <a class="nav-link text-warning" href="#">Chat</a>
+            <a class="nav-link text-warning" href="{% url 'chat:chat' %}">Chat</a>
           </li>
 
           <li class="nav-item h5">

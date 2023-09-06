@@ -63,9 +63,10 @@
     <div class="col-md-1">
       <h5>Gallery</h5>
       <ul class="list-unstyled">
-        <li><a href="#">Motorcycles</a></li>
-        <li><a href="#">Events</a></li>
-        <li><a href="#">Places</a></li>
+        <li><a href="{% url 'gallery:gallery' %}?title=Motorcycles">Motorcycles</a></li>
+        <li><a href="{% url 'gallery:gallery' %}?title=Events">Events</a></li>
+        <li><a href="{% url 'gallery:gallery' %}?title=Places">Places</a></li>
+        <li><a href="{% url 'gallery:gallery' %}">All Albums</a></li>
       </ul>
     </div>
     <div class="col-md-1">
@@ -79,8 +80,9 @@
     <div class="col-md-1">
       <h5>News</h5>
       <ul class="list-unstyled">
-        <li><a href="{% url 'home:home' %}">MotoGP</a></li>
-        <li><a href="{% url 'home:home' %}">Dakar</a></li>
+        <li><a href="{% url 'new:new' %}?title=MotoGP">MotoGP</a></li>
+        <li><a href="{% url 'new:new' %}?title=Dakar">Dakar</a></li>
+        <li><a href="{% url 'new:new' %}">All News</a></li>
       </ul>
     </div>
     <div class="col-md-1">
