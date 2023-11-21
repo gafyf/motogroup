@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.db.models import Q
 from django.utils.translation import gettext as _
 

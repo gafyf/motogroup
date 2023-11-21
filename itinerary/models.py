@@ -33,16 +33,16 @@ class Itinerary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
-    country = models.CharField(max_length=50, choices=COUNTRY, blank=True, verbose_name=_('Country'))
+    country = models.CharField(max_length=20, choices=COUNTRY, blank=True, verbose_name=_('Country'))
     image = models.ImageField(upload_to='itineraries', blank=True)
     description = models.TextField(max_length=10000, blank=True)
-    places_to_visit = models.TextField(max_length=10000, blank=True)
-    places_to_eat = models.TextField(max_length=10000, blank=True)
-    places_to_sleep = models.TextField(max_length=10000, blank=True)
-    start_point = models.CharField(max_length=200)
+    places_to_visit = models.TextField(max_length=1000, blank=True)
+    places_to_eat = models.TextField(max_length=1000, blank=True)
+    places_to_sleep = models.TextField(max_length=1000, blank=True)
+    start_point = models.CharField(max_length=500)
     waypoints = models.CharField(max_length=1000, blank=True)
-    end_point = models.CharField(max_length=200)
-    distance = models.CharField(max_length=100)
+    end_point = models.CharField(max_length=500)
+    distance = models.CharField(max_length=500)
     travel_time = models.CharField(max_length=100)
     winter_stats = models.BooleanField(default=False, blank=True)
     likes = models.IntegerField(default=0)
@@ -56,9 +56,6 @@ class Itinerary(models.Model):
     def get_absolute_url(self):
         return reverse("itinerary:itinerary", args=[str(self.id)])
     
-    # def get_image_url(self):
-    #     return reverse("itinerary:image", args=[str(self.id)])
-    
     def get_delete_url(self):
         return reverse("itinerary:delete", args=[str(self.id)])
     
@@ -70,11 +67,9 @@ class Itinerary(models.Model):
                 self.dislikes -= 1
                 self.disliked_by.remove(user_profile)
         if self.is_liked_by_user(user_profile):
-            # User already liked the message, remove the like
             self.likes -= 1
             self.liked_by.remove(user_profile)
         else:
-            # User hasn't liked the message, add the like and remove dislike if exists
             self.likes += 1
             self.liked_by.add(user_profile)
         self.save()
@@ -84,11 +79,9 @@ class Itinerary(models.Model):
                 self.likes -= 1
                 self.liked_by.remove(user_profile)
         if self.is_disliked_by_user(user_profile):
-            # User already disliked the message, remove the dislike
             self.dislikes -= 1
             self.disliked_by.remove(user_profile)
         else:
-            # User hasn't disliked the message, add the dislike and remove like if exists
             self.dislikes += 1
             self.disliked_by.add(user_profile)
         self.save()

@@ -15,10 +15,6 @@ class ItineraryForm(forms.ModelForm):
             'places_to_visit': _('Places to visit'),
             'places_to_eat': _('Places to eat'),
             'places_to_sleep': _('Places to sleep'),
-            # 'start_point': _('Start point'),
-            # 'end_point': _('End point'),
-            # 'distance': _('Distance'),
-            # 'travel_time': _('Travel time'),
             'winter_stats': _('Winter stats'),
         }
         widgets = {
@@ -29,13 +25,7 @@ class ItineraryForm(forms.ModelForm):
             "places_to_eat": forms.Textarea(attrs={"class": "form-control", 'placeholder': _('Type the places to eat')}),
             "places_to_sleep": forms.Textarea(attrs={"class": "form-control", 'placeholder': _('Type the places to sleep')}),
             "image": forms.FileInput(attrs={"class": "form-control", 'placeholder': _('Load image')}),
-            # "start_point": forms.HiddenInput(attrs={'required':'required'}),
-            # "waypoints": forms.HiddenInput(),
-            # "end_point": forms.HiddenInput(attrs={'required':'required'}),
-            # "distance": forms.HiddenInput(),
-            # "travel_time": forms.HiddenInput(),
             "winter_stats": forms.CheckboxInput(attrs={"class": "form-check"}),
-            # "maximal_participants": forms.NumberInput(attrs={"class": "form-control", 'required':'False', 'placeholder': _('Enter the number of maximal participants ONLY IF REQUIRED')}),
         }
         
         help_texts = {
@@ -46,10 +36,6 @@ class ItineraryForm(forms.ModelForm):
             'places_to_eat': _('Type the places to eat'),
             'places_to_sleep': _('Type the places to sleep'),
             'places_to_sleep': _('Type the places to sleep'),
-            # 'start_point': _('Type the start point'),
-            # 'end_point': _('Type the end point'),
-            # 'distance': _('Type the distance'),
-            # 'travel_time': _('Type the travel time'),
             'winter_stats': _('Check if is closed during winter'),
             'image': _('Load image'),
         }

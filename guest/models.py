@@ -4,12 +4,11 @@ import uuid
 from account.models import User
 
 
-# model post messages from a guest
 class Message(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField()
-    text = models.TextField(max_length=5000, blank=True, null=True)
+    text = models.TextField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_approved = models.BooleanField(default=False)
     likes = models.IntegerField(default=0)
@@ -29,11 +28,9 @@ class Message(models.Model):
                 self.dislikes -= 1
                 self.disliked_by.remove(user_profile)
         if self.is_liked_by_user(user_profile):
-            # User already liked the message, remove the like
             self.likes -= 1
             self.liked_by.remove(user_profile)
         else:
-            # User hasn't liked the message, add the like and remove dislike if exists
             self.likes += 1
             self.liked_by.add(user_profile)
         self.save()
@@ -43,11 +40,9 @@ class Message(models.Model):
                 self.likes -= 1
                 self.liked_by.remove(user_profile)
         if self.is_disliked_by_user(user_profile):
-            # User already disliked the message, remove the dislike
             self.dislikes -= 1
             self.disliked_by.remove(user_profile)
         else:
-            # User hasn't disliked the message, add the dislike and remove like if exists
             self.dislikes += 1
             self.disliked_by.add(user_profile)
         self.save()

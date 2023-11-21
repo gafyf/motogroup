@@ -2,17 +2,13 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .forms import ItineraryForm
 from .models import Itinerary
-from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from django.views.generic import DetailView
-from django.contrib.auth.decorators import login_required, user_passes_test
-from typing import Any, Dict
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
 from django.conf import settings
-import requests, geocoder
-
-
+import requests
 
 
 def itineraries(request):
@@ -31,7 +27,6 @@ def itineraries(request):
 
 def get_location_name(lat, lng):
     api_key = settings.TOMTOM_API_KEY
-    # print('api get location name', api_key)
     url = f'https://api.tomtom.com/search/2/reverseGeocode/{lat},{lng}.json?key={api_key}&radius=50'
     response = requests.get(url).json()
     if response.get('addresses'):
@@ -87,11 +82,9 @@ class ItineraryDetailView(DetailView):
         context['start_point_map'] = start_point_map
         context['end_point_map'] = end_point_map
         context['waypoints_latlng'] = waypoints_latlng
-
         context['start_location'] = start_location
         context['end_location'] = end_location
         context['waypoints_locations'] = waypoints_locations
-
         context['api_key'] = settings.TOMTOM_API_KEY
 
         return context
