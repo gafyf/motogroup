@@ -1,0 +1,65 @@
+h2.titlu {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+form.form-control {
+    background: none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+p {
+    margin-top: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+label {
+    text-align: right;
+    margin-right: 5px;
+    display: inline-block;
+    width: 30%;
+}
+
+input.form-control {
+    display: inline-block;
+    width: 50%;
+}
+
+/* input#id_username{
+    margin-left: 15px;
+}
+
+input#id_password{
+    margin-left: 17px;
+
+} */
+
+button.btn.btn-secondary {
+    display: block;
+    width: 290px;
+    margin-left: 33.5%;
+    margin-right: 5%;
+}
+
+p.user_nou {
+    margin-left: 218px;
+    margin-top: 15px;
+
+}
+a.btn.btn-secondary.btn-sm {
+    display: inline;
+    margin-right: 46px;
+    width: 30%;
+}
+
+
+/* a.btn.btn-secondary {
+    margin-right: 30%;
+} */

@@ -1,0 +1,20 @@
+
+.table {
+    color: darkslategray;
+}
+
+/* .table.staff {
+
+} */
+
+.a-img {
+    margin-right: 20px;
+}
+
+.profil-img {
+    transition: transform .2s;
+}
+
+.profil-img:hover {
+    transform: scale(1.2);
+}

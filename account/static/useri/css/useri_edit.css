@@ -1,0 +1,58 @@
+div.user_head {
+    margin-left: 300px;
+    margin-top: 15px;
+}
+
+span.user_p {
+    margin-right: 130px;
+}
+
+.user_img {
+    margin-left: 10px;
+    border-radius: 5px;
+    max-width: 55px;
+    max-height: 55px;
+    transition: transform .2s;
+}
+
+.user_img:hover {
+    transform: scale(1.2);
+}
+
+/* a.btn.btn-secondary-outline.btn-sm {
+    margin-left: 240px;
+    border-color: #ced4da;
+} */
+
+form.form-control {
+    background:none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+p {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+label {
+    text-align: right;
+    margin-right: 5px;
+    display: inline-block;
+    width: 30%;
+}
+
+input.form-control {
+    display: inline-block;
+    width: 50%;
+}
+
+input.btn.btn-secondary {
+    width: 290px;
+    text-align: center;
+    margin-left: 33.5%;
+}
