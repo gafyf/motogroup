@@ -31,12 +31,12 @@ class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_by = models.ForeignKey(Profile, related_name='events', on_delete=models.CASCADE, null=True, blank=True)
     updated_by = models.ForeignKey(Profile, related_name='+', on_delete=models.CASCADE, null=True, blank=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     description = models.TextField()
-    country = models.CharField(max_length=50, choices=COUNTRY, blank=True, verbose_name=_('Country'))
-    county = models.CharField(max_length=50, blank=True, verbose_name=_('County'))
-    town = models.CharField(max_length=50, blank=True, verbose_name=_('Town'))
-    location = models.CharField(max_length=500, blank=True, verbose_name=_('Location'))
+    country = models.CharField(max_length=20, choices=COUNTRY, blank=True, verbose_name=_('Country'))
+    county = models.CharField(max_length=20, blank=True, verbose_name=_('County'))
+    town = models.CharField(max_length=20, blank=True, verbose_name=_('Town'))
+    location = models.CharField(max_length=1000, blank=True, verbose_name=_('Location'))
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     image = models.ImageField(upload_to='events', blank=True)
@@ -105,11 +105,9 @@ class Event(models.Model):
                 self.dislikes -= 1
                 self.disliked_by.remove(user_profile)
         if self.is_liked_by_user(user_profile):
-            # User already liked the message, remove the like
             self.likes -= 1
             self.liked_by.remove(user_profile)
         else:
-            # User hasn't liked the message, add the like and remove dislike if exists
             self.likes += 1
             self.liked_by.add(user_profile)
         self.save()
@@ -119,11 +117,9 @@ class Event(models.Model):
                 self.likes -= 1
                 self.liked_by.remove(user_profile)
         if self.is_disliked_by_user(user_profile):
-            # User already disliked the message, remove the dislike
             self.dislikes -= 1
             self.disliked_by.remove(user_profile)
         else:
-            # User hasn't disliked the message, add the dislike and remove like if exists
             self.dislikes += 1
             self.disliked_by.add(user_profile)
         self.save()

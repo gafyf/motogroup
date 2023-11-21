@@ -5,7 +5,6 @@ app_name = 'gallery'
 
 urlpatterns = [
     path('gallery/', gallery, name='gallery'),
-    # path('', ImageListView.as_view(), name='image_list'),
     path('<str:pk>/', ImageDetailView.as_view(), name='image_detail'),
     path('', create_album, name='create_album'),
     path('update_album/<str:album_id>/', create_album, name='update_album'),

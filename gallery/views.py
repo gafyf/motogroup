@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from .models import Image, Album
 from .forms import AlbumForm, ImageUploadForm
 from django.core.paginator import Paginator
@@ -66,11 +66,6 @@ def upload_image(request, album_id):
         form = ImageUploadForm()
     return render(request, 'gallery/upload_image.html', {'form': form, 'album': album})
 
-
-# class ImageListView(ListView):
-#     model = Image
-#     template_name = 'gallery/image_list.html'
-#     context_object_name = 'images'
 
 class ImageDetailView(DetailView):
     model = Image

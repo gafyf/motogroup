@@ -11,7 +11,7 @@ def get_image_upload_path(instance, filename):
     
 class Album(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -24,8 +24,8 @@ class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     uploaded_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name=_('uploaded_by'), verbose_name=_('Uploaded By'))
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='images')
-    title = models.CharField(max_length=100, blank=True)
-    description = models.TextField(max_length=10000, blank=True)
+    title = models.CharField(max_length=50, blank=True)
+    description = models.TextField(max_length=500, blank=True)
     image = models.ImageField(upload_to=get_image_upload_path)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
@@ -44,11 +44,9 @@ class Image(models.Model):
                 self.dislikes -= 1
                 self.disliked_by.remove(user_profile)
         if self.is_liked_by_user(user_profile):
-            # User already liked the message, remove the like
             self.likes -= 1
             self.liked_by.remove(user_profile)
         else:
-            # User hasn't liked the message, add the like and remove dislike if exists
             self.likes += 1
             self.liked_by.add(user_profile)
         self.save()
@@ -58,11 +56,9 @@ class Image(models.Model):
                 self.likes -= 1
                 self.liked_by.remove(user_profile)
         if self.is_disliked_by_user(user_profile):
-            # User already disliked the message, remove the dislike
             self.dislikes -= 1
             self.disliked_by.remove(user_profile)
         else:
-            # User hasn't disliked the message, add the dislike and remove like if exists
             self.dislikes += 1
             self.disliked_by.add(user_profile)
         self.save()

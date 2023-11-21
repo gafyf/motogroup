@@ -3,13 +3,13 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import EventForm
 from .models import  Event
-# from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from django.views.generic.edit import CreateView
 from django.views.generic import DetailView, UpdateView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
+
 
 def event_list(request):
     events = Event.objects.all()
