@@ -14,7 +14,6 @@ from django.core.mail import EmailMessage
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required, user_passes_test
-from typing import Any, Dict
 from django.utils.decorators import method_decorator
 
 from .models import Profile, User
@@ -32,7 +31,7 @@ def activateEmail(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        messages.success(request, _(f'Go to your email address {to_email} to activate your account.'))
+        messages.success(request, _(f'Go to your email address {to_email}. You have 1 hour to activate your account.'))
     else:
         messages.error(request, _(f'Email could not be sent to the address {to_email}, check if it is written correctly.'))
 

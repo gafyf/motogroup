@@ -5,8 +5,8 @@ from django.urls import reverse
 
 class Message(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    message = models.CharField(max_length=1000000)
-    answer = models.CharField(max_length=1000000, blank=True)
+    message = models.CharField(max_length=500)
+    answer = models.CharField(max_length=500, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
     
