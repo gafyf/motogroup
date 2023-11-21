@@ -7,7 +7,7 @@ class New(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200, blank=True)
     description = models.TextField(max_length=500, blank=True)
-    text = models.TextField(max_length=50000, blank=True)
+    text = models.TextField(max_length=90000, blank=True)
     image = models.ImageField(upload_to='news', blank=True)
     link = models.URLField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

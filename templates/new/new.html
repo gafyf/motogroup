@@ -3,8 +3,26 @@
 
 {% block title %} News {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+<style>
+
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+    h5 {
+      font-size: 15px;
+    }
+    p {
+      font-size: 13px;
+    }
+    nav.nav-pagination-class {
+      opacity: 50%;
+    }
+  }
+
+</style>
+
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -23,24 +41,17 @@
                 {% endfor %}
             {% endif %}
           </center>
-          {% comment %} <h4 class="card-title text-bg-dark text-light my-4 mx-auto"> 
-            Want to add images in this album? Click
-            <a class="text-warning" href="{% url 'gallery:upload_image' album.id %}">
-              here 
-            </a>
-            and add one.
-          </h4> {% endcomment %}
         </div>
         <div class='col-md-1 d-flex flex-column justify-content-end'>
         </div>
     </div>  
   <div class='col-md-1'>
+    <h3 style='color: yellow;'>{{ lambda_response }}</h3>
   </div>
   <div id='news-list-id' class="col-md-10 d-flex flex-column justify-content-end">
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for new in page_obj %}
         <div class="col">
-          {% comment %} <a class="text-dark" href="{{ image.image.url }}" style=""> {% endcomment %}
           <a class="text-dark" href="{{ new.get_absolute_url }}" style="text-decoration: none;">
             <div class="card h-100">
               <div class='card-header d-flex justify-content-center max-w-auto my-auto' style="min-height: 250px; max-height: 300px;">
@@ -62,7 +73,7 @@
         </div>
         {% endfor %}
     </div>
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" class='nav-pagination-class'>
       <ul class="pagination justify-content-center mt-3">
         {% if page_obj.has_previous %}
           <li class="page-item">
@@ -102,5 +113,4 @@
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}

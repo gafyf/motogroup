@@ -9,6 +9,13 @@
     margin-left: 2rem; /* Set a default margin for h5 elements */
     margin-right: 2rem; /* Set a default margin for h5 elements */
   }
+
+  div.col-md-12 {
+    min-height: 200px; 
+    max-height: 600px; 
+    min-width: 81.5%; 
+    max-width: 81.5%;
+  }
   
   @media (max-width: 800px) {
     /* Adjust the minimum size for smaller screens */
@@ -20,7 +27,23 @@
     .list-group-item h5 {
       margin-left: 1rem; /* Reduce the margin for h5 elements to mx-1 */
     }
+    h4.card-title {
+      font-size: 15px;
+    }
+    div.card-subtitle {
+      font-size: 15px;
+    }
+    h5 {
+      font-size: 17px;
+    }
+    div.col-md-12 {
+      max-width: 100%;
+      max-height: 100%;
+
+    }
+
   }
+
 </style>
 
 <center>
@@ -130,7 +153,7 @@
     </div>
     <div class='container-fluid'>
       <div id='description-id' class="row container-fluid justify-content-center pt-4 mx-1 mb-3">
-        <div class="col-md-12" style="min-height: 200px; max-height: 600px; min-width: 81.5%; max-width: 81.5%;">
+        <div class="col-md-12">
           <div class='card'>
             <div class="card-header card-header-primary">
               <h4 class="card-title">

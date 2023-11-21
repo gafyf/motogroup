@@ -35,6 +35,20 @@
     .col-add-event .text-warning:hover {
       filter: invert(30%);
     }
+
+    @media (max-width: 800px) {
+      /* Adjust the minimum size for smaller screens */
+      h4 {
+        font-size: 15px;
+      }
+      nav.nav-pagination-class {
+        opacity: 50%;
+      }
+      h5.card-title {
+        font-size: 16px;
+      }
+    }
+
   </style>
 {% endblock stylesheets %}
 
@@ -80,7 +94,8 @@
                 <div class="card-body">
                   <h5 class="card-title d-flex justify-content-center mw-auto my-auto">{{ itinerary.name|title }}</h5>
                   <div class='custom-scroll mt-4'>
-                    <p class="card-text mx-1">{{ itinerary.description }}</p>
+                    {% comment %} <p class="card-text mx-1">{{ itinerary.description }}</p> {% endcomment %}
+                    <p class="card-text mx-1 small" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ itinerary.description }}</p>
                   </div>
                 </div>
                 <div class="card-footer">
@@ -93,7 +108,7 @@
           </div>
           {% endfor %}
         </div>
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class='nav-pagination-class'>
           <ul class="pagination justify-content-center my-4">
             {% if page_obj.has_previous %}
               <li class="page-item">
@@ -155,11 +170,9 @@
     }
 
     if (scrollTop < prevScrollTop) {
-      // Scrolling up
       form.style.bottom = '';
       form.style.top = '';
     } else if (scrollTop === 0) {
-      // Reached the top
       form.style.bottom = '';
       form.style.top = '';
     }

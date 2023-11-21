@@ -7,23 +7,58 @@
 # from datetime import datetime
 # import time
 
-# chrome_driver_path = r'C:\Users\39327\Downloads\chromedriver_win32_2\chromedriver.exe'
-# service = Service(executable_path=chrome_driver_path)
+# # chrome_driver_path = "/usr/local/bin/chromedriver"/home/cloudshell-user/chromedriver-linux64/chromedriver
 
-# option = Options()
+# # Set the path to Chromedriver
+# # chrome_driver_path = "/home/cloudshell-user/chromedriver-linux64/chromedriver"
 
-# option.add_argument("--disable-infobars")
-# option.add_argument("start-maximized")
-# option.add_argument("--disable-extensions")
+# # # Create ChromeOptions and set the path to Chromedriver
+# # option = webdriver.ChromeOptions()
+# # option.add_argument(f"webdriver.chrome.driver={chrome_driver_path}")
 
-# option.add_argument('--headless')  # Optional: Run in headless mode without a visible browser window
+# # service = Service(executable_path=chrome_driver_path)
+
+# # option = Options()
+
+# # option.add_argument("--disable-infobars")
+# # option.add_argument("start-maximized")
+# # option.add_argument("--disable-extensions")
+
+# # option.add_argument('--headless')  # Optional: Run in headless mode without a visible browser window
+
+# # option.add_argument("--disable-gpu")
+
+# # # Pass the argument 1 to allow and 2 to block
+# # option.add_experimental_option("prefs", { 
+# #     "profile.default_content_setting_values.notifications": 2
+# # })
+
+# # driver = webdriver.Chrome(service=service, options=option)
+
+# # Set the path to Chromedriver
+# # chrome_driver_path = "/home/cloudshell-user/chromedriver-linux64/chromedriver"
+# chrome_driver_path = "/usr/local/bin/chromedriver"
+
+# # Create ChromeOptions and set the path to Chromedriver
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.add_argument(f"webdriver.chrome.driver={chrome_driver_path}")
+
+# # Configure other Chrome options
+# chrome_options.add_argument("--disable-infobars")
+# chrome_options.add_argument("start-maximized")
+# chrome_options.add_argument("--disable-extensions")
+# chrome_options.add_argument('--headless')  # Optional: Run in headless mode without a visible browser window
+# chrome_options.add_argument("--disable-gpu")
 
 # # Pass the argument 1 to allow and 2 to block
-# option.add_experimental_option("prefs", { 
+# chrome_options.add_experimental_option("prefs", { 
 #     "profile.default_content_setting_values.notifications": 2
 # })
 
-# driver = webdriver.Chrome(service=service, options=option)
+# # Initialize the Chrome webdriver with the specified options
+# driver = webdriver.Chrome(options=chrome_options)
+
+
 # driver.get('https://www.motociclismo.it/news')
 
 # delay = random.randint(2, 7)
@@ -76,8 +111,8 @@
 #         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 #         time.sleep(delay)
 #         article_title = driver.find_element(By.XPATH, '//*[@id="article-title"]').text
-#         article_descritpion = driver.find_element(By.XPATH, '//*[@class="description"]').text
-#         print('article_descritpion article_descritpion', article_descritpion)
+#         article_description = driver.find_element(By.XPATH, '//*[@class="description"]').text
+#         print('article_description article_description', article_description)
 
 #         # article_block_text = driver.find_element(By.XPATH, '//*[@class="articolo-block-text"]').text
 #         block_text = driver.find_elements(By.CSS_SELECTOR, '.articolo-block-text')
@@ -92,13 +127,13 @@
 #         link = driver.current_url
 #         print('Article_link', link)
 #         print('Article_title', article_title)
-#         print('Article_descritpion', article_descritpion)
+#         print('Article_description', article_description)
 #         print('Article_block_text', article_block_text)
 #         print('Article_image', article_image)
 
 #         time.sleep(delay)
 #         time.sleep(delay)
-#         scraped_data.append({'article_title': article_title, 'article_descritpion': article_descritpion, 'article_block_text': article_block_text, 'article_image': article_image, 'link': link})
+#         scraped_data.append({'article_title': article_title, 'article_description': article_description, 'article_block_text': article_block_text, 'article_image': article_image, 'link': link})
 #         print('scraped_data dupa append', scraped_data)
 #         time.sleep(delay)
 #         time.sleep(delay)
@@ -110,6 +145,6 @@
 
 #     time.sleep(delay)
 
-# time.sleep(24 * 60 * 60)
+# # time.sleep(24 * 60 * 60)
 # driver.quit()
 

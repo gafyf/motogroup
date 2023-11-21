@@ -5,9 +5,6 @@
 
 {% block content %}
 <style>
-  {% comment %} .clicked {
-    fill: green;
-  } {% endcomment %}
   .list-group-item h5 {
     margin-left: 2rem; /* Set a default margin for h5 elements */
     margin-right: 2rem; /* Set a default margin for h5 elements */
@@ -15,6 +12,24 @@
   
   @media (max-width: 800px) {
     /* Adjust the minimum size for smaller screens */
+    h5 {
+      font-size: 13px;
+    }
+
+    h3.card-title {
+      font-size: 20px;
+    }
+
+    h6 {
+      font-size: 12.5px;
+    }
+
+    .created-by-class {
+      font-size: 10px;
+      color: #6c757d;
+      text-align: right;
+    }
+
 
     .card-header {
       display: flex;
@@ -22,10 +37,16 @@
     }
     .list-group-item h5 {
       margin-left: 1rem; /* Reduce the margin for h5 elements to mx-1 */
+      margin-right: 1rem;
+      
     }
     .form-control{
       display: flex;
       flex-direction: column; /* Stack elements vertically */
+    }
+
+    .public-class {
+      text-align: right;
     }
   }
 
@@ -50,6 +71,7 @@
             <h3 class="card-title my-4 mx-4">
               {{ event.title|default_if_none:""|title }}
             </h3>
+            <div id="small-public-event-id" class="text-muted mx-4"></div>
             <div class="card-subtitle text-muted">
               {% if user.is_authenticated %}
                 <div class='my-1 w-100 d-flex justify-content-end'>
@@ -61,12 +83,12 @@
                   </a>
                 </div>
               {% endif %}
-              <div class='mt-4 small'>
+              <div class='created-by-class mt-4 small'>
                 Created by: {{ event.created_by }}
                 at: {{ event.created_at|date:"d/m/Y H:i" }}
               </div>
               {% if event.updated_by != event.created_by and event.updated_by != None %}
-              <div class='small'>
+              <div class='created-by-class small'>
                 Updated by: {{ event.updated_by }}
                 at: {{ event.updated_at|date:"d/m/Y H:i" }}
               </div>
@@ -155,7 +177,7 @@
                         </button>
                       </div>
 
-                      <div class="text-muted small mx-5">
+                      <div id="public-event-id" class="public-class text-muted small mx-5">
                         {% if event.is_public == True  %}
                         <h5 class="card-text mx-auto my-auto">Public Event</h5>
                         {% else %}
@@ -183,15 +205,15 @@
     </div>
     
     <script>
-      {% comment %} document.getElementById("participate-icon").addEventListener("click", function() {
-          if (this.classList.contains("clicked")) {
-              this.classList.remove("clicked");
-              // Add code to handle removing the user's participation
-          } else {
-              this.classList.add("clicked");
-              // Add code to handle adding the user's participation
-          }
-      }); {% endcomment %}
+      
+      if (window.innerWidth <= 800) {
+        var textContent = document.getElementById('public-event-id').innerHTML;
+        
+        document.getElementById('small-public-event-id').innerHTML = textContent;
+        
+        document.getElementById('public-event-id').innerHTML = '';
+      }
+      
     </script>
   
   

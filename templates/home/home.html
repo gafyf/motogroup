@@ -6,14 +6,12 @@
 {% block stylesheets %}
 <style>
     .background-image {
-      background-color: black;
-      background-image: url('/media/rp2r_bg.jpg');
-      background-size: 100% 100%;
+      background-image: url('https://scontent.fflr4-1.fna.fbcdn.net/v/t39.30808-6/316018639_5555624221189626_7667045671348702986_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=EZ6_6Nee1ksAX_LYcCh&_nc_ht=scontent.fflr4-1.fna&oh=00_AfDeHI3eaB0MS8ncXGLyRUgp6LrjIPSiscccT_IrHHJJZg&oe=65609530');
       min-height: 800px;
       min-width: 600px;
       background-position: center;
-      background-repeat: no-repeat;
-      {% comment %} filter: brightness(25%); {% endcomment %}
+      padding-top: 100px;
+      background-size: cover;
     }
 
     .text-light {
@@ -30,6 +28,7 @@
     @media (max-width: 800px) {
       /* Adjust the minimum size for smaller screens */
       .background-image {
+        --bs-bg-opacity: 0.7;
         background-image: url('/media/rp2r_bg.jpg');
         min-height: 200px;
         min-width: 300px;

@@ -1,11 +1,17 @@
 <script>
-    var navbar = document.getElementById('navbar');
-    var prevScrollPos = window.pageYOffset;
-    var isScrollingUp = false;
-    
-    window.addEventListener('scroll', function() {
-      var currentScrollPos = window.pageYOffset;
-    
+
+  var navbar = document.getElementById('navbar');
+  var prevScrollPos = window.pageYOffset;
+  var isScrollingUp = false;
+
+  // Define the screen width threshold for applying fixed position
+  var screenWidthThreshold = 800; // You can adjust this value as needed
+
+  window.addEventListener('scroll', function() {
+    var currentScrollPos = window.pageYOffset;
+
+    if (window.innerWidth >= screenWidthThreshold) {
+      // Only apply the scrolling behavior on large screens
       if (prevScrollPos > currentScrollPos) {
         // Scrolling up
         if (!isScrollingUp) {
@@ -18,16 +24,22 @@
         if (isScrollingUp) {
           isScrollingUp = false;
           navbar.style.top = '-100px';
-          navbar.style.position = 'relative';
+          navbar.style.position = 'fixed';
         }
       }
-    
-      if (currentScrollPos === 0) {
-        // Reached top of the page
-        navbar.style.position = 'relative';
-      }
-    
+
       prevScrollPos = currentScrollPos;
-    });
+
+      if (currentScrollPos === 0) {
+        navbar.style.top = 'initial';
+        navbar.style.position = 'relative';
+        navbar.style.marginBottom = 'initial';
+      }
+    } else {
+      // On small screens, always display the navbar at the top
+      navbar.style.top = '0';
+      navbar.style.position = 'relative';
+    }
+  });
     
 </script>

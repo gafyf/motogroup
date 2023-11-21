@@ -3,15 +3,48 @@
 {% load static %}
 {% block title %} {% translate "Virtual mechanic" %} {% endblock %}
 
+{% block stylesheets %}
+<style>
+
+  .paragrafe {
+    min-height: 100px;
+  }
+
+  .modal-body {
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: thin; /* Width of the scrollbar - message form */
+    scrollbar-color: #888888 #f5f5f5; /* Color of the scrollbar - message form */
+  }
+  
+  .modal-body::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar - message form */
+  }
+  
+  .modal-body::-webkit-scrollbar-thumb {
+    background-color: #888888; /* Color of the scrollbar thumb - message form */
+    border-radius: 4px; /* Rounded corners of the scrollbar thumb - message form */
+  }
+  
+  .modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #555555; /* Color of the scrollbar thumb on hover - message form */
+  }
+
+  .icon {
+    margin-right: 1rem;
+  }
+
+</style>
+{% endblock %}
+
 {% block content %}
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Send Message</h5>
+                      <h5 class="modal-title" id="exampleModalLabel">Virtual mechanic</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -19,6 +52,9 @@
 
                   <div class="modal-body">
                     <div class="paragrafe" id='paragrafe'>
+                      <p id="placeholder">
+                        Welcome to our Motorcycle Help Chatbot. Please let me know about your motorcycle-related problems, and I'll do my best to assist you.
+                      </p>
                       <p></p>
                     </div>
                   </div>
@@ -26,7 +62,7 @@
                   <div class="modal-footer">
                     <form class='my-auto mx-auto'>
                       <div class="form-group my-auto mx-auto">
-                          <input type="text" class="form-control" id="message" placeholder="Ask me something about your motorcycle...">
+                          <input type="text" class="form-control" id="message" placeholder="Type your text...">
                       </div>
                     </form>
                     <button type="button" id='send-button' class="btn btn-primary" onclick="sendMessage()">Send</button>
@@ -36,19 +72,19 @@
       </div>
     </div>
 
-    <!-- Bootstrap JS and jQuery (required for the modal to work) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+
         $('#termsModal').modal('show');
         function sendMessage() {
             var messageInput = document.getElementById("message").value;
-            // Do something with the message, e.g., send it to the server
             console.log("Message sent:", messageInput);
             if (messageInput.length > 0) {
               var now = new Date();
+              document.getElementById('placeholder').innerHTML = '';
               $.ajax({
                 url: "{% url 'chat:send_message' %}",
                 type: "POST",
@@ -56,12 +92,44 @@
                 message: messageInput
                 },
                 dataType: "json",
+               
                 success: function(response) {
+                  var icons = [
+                      '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16"> ' +
+                      '<path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/> ' +
+                      '</svg>',
+                      '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-bicycle" viewBox="0 0 16 16"> ' +
+                      '<path d="M4 4.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1v.5h4.14l.386-1.158A.5.5 0 0 1 11 4h1a.5.5 0 0 1 0 1h-.64l-.311.935.807 1.29a3 3 0 1 1-.848.53l-.508-.812-2.076 3.322A.5.5 0 0 1 8 10.5H5.959a3 3 0 1 1-1.815-3.274L5 5.856V5h-.5a.5.5 0 0 1-.5-.5zm1.5 2.443-.508.814c.5.444.85 1.054.967 1.743h1.139L5.5 6.943zM8 9.057 9.598 6.5H6.402L8 9.057zM4.937 9.5a1.997 1.997 0 0 0-.487-.877l-.548.877h1.035zM3.603 8.092A2 2 0 1 0 4.937 10.5H3a.5.5 0 0 1-.424-.765l1.027-1.643zm7.947.53a2 2 0 1 0 .848-.53l1.026 1.643a.5.5 0 1 1-.848.53L11.55 8.623z"/>' +
+                      '</svg>'
+                  ]; 
+              
                   for (var key in response) {
-                    console.log(response[key]);
-                    var msg = $("<p>").addClass("paragraf").text(response[key]);
-                    $("#paragrafe").append(msg);
+                      console.log(response[key]);
+                      var msg = $("<p>").addClass("paragraf").text(response[key]);
+              
+                      // icon chatbot
+                      if (key === 'Message') {
+                          var icon1 = $(icons[0]).addClass('icon');
+                          msg.prepend(icon1);
+                      }
+                      
+                      // icon user
+                      if (key === 'r') {
+                          var icon2 = $(icons[1]).addClass('icon');
+                          msg.prepend(icon2);
+                      }
+              
+                      $("#paragrafe").append(msg);
+                      
                   }
+
+                $("#paragrafe").append('<hr>');
+                var modalBody = document.querySelector('.modal-body');
+
+                // Scroll to the bottom of the "modal-body" element
+                modalBody.scrollTop = modalBody.scrollHeight;
+                document.getElementById("message").value = '';
+
                 }
               })
             }
@@ -69,4 +137,3 @@
     </script>
 
 {% endblock %}
-

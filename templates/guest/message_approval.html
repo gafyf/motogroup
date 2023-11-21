@@ -3,8 +3,28 @@
 
 {% block title %} Messages to approve {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+    div.card-subtitle {
+      font-size: 15px;
+    }
+    h4.card-title {
+      font-size: 16px;
+    }
+    p.card-text {
+      font-size: 14px;
+    }
+    div.text-muted.small {
+      text-align: right;
+    }
+    nav.nav-pagination-class {
+      opacity: 50%;
+    }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 
@@ -56,7 +76,7 @@
           </div>
       </div>
     </div>
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" class='nav-pagination-class'>
       <ul class="pagination justify-content-center mt-3">
         {% if page_obj.has_previous %}
           <li class="page-item">

@@ -2,9 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-
 {% block title %} {% translate "Create Itinerary" %} {% endblock %}
-
 
 
 {% block content %}
@@ -13,8 +11,7 @@
 <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.53.0/services/services-web.min.js"></script>
 <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox-web.js"></script>
 <link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.12/SearchBox.css"/>
-{% comment %} <link rel='stylesheet' type='text/css' href='../assets/ui-library/index.css'/> {% endcomment %}
-{% comment %} <script type='text/javascript' src='../assets/js/mobile-or-tablet.js'></script> {% endcomment %}
+
 
 {% block stylesheets %}
 <style>
@@ -48,6 +45,17 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+    .form-control {
+      font-size: 14px;
+    }
+    .form-control::placeholder {
+      font-size: 11.5px;
+    }
+
   }
 
 </style>
@@ -327,11 +335,9 @@
         document.getElementById('id_distance').value = formatDistance(totalDistance);
         document.getElementById('id_travel_time').value = formatTravelTime(totalTravelTime);
         if (startInput.value.trim() === '' || endInput.value.trim() === '') {
-          // Display an error message or perform other actions to indicate missing start/end points
           alert('Please provide at least start and end points.');
-          event.preventDefault(); // Prevent form submission
+          event.preventDefault(); 
         }else {
-          // Submit the form
           form.submit();
         }
       });
@@ -348,7 +354,6 @@ searchButton.addEventListener('click', function() {
   searchLocation();
 });
 
-// Event listener for search input
 searchInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();

@@ -2,10 +2,13 @@
 
 {% blocktranslate %}Email from: {{ domain }}.{% endblocktranslate %}
 
-{% translate "Click on the link below to activate the new account:" %}
+{% translate "Click on the link below to activate the new account:" %} 
 {% block reset_link %}
 {{ protocol }}://{{ domain }}{% url 'account:activate' uidb64=uid token=token %}
 {% endblock %}
+
+{% translate 'The link is valid for one hour!' %}
+
 {% translate 'In case you forgot, the user is:' %} {{ user }}
 
 {% translate "Thank you!" %}

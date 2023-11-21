@@ -3,6 +3,19 @@
 {% block title %} Gallery {% endblock %}
 
 {% block stylesheets %}
+
+<style>
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+    h4 {
+      font-size: 15px;
+    }
+    nav.nav-pagination-class {
+      opacity: 50%;
+    }
+  }
+</style>
+
 {% endblock stylesheets %}
 
 {% block content %}
@@ -57,7 +70,7 @@
           </div>
           {% endfor %}
         </div>
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class='nav-pagination-class'>
           <ul class="pagination justify-content-center my-4">
             {% if page_obj.has_previous %}
               <li class="page-item">

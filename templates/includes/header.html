@@ -19,13 +19,23 @@
     background-color: rgba(0, 0, 0, 0.8);
   }
 
+
   @media (max-width: 800px) {
-    /* Invert the color of the menu button for small screens */
-    #navbar .navbar-toggler {
-      filter: invert(100%); /* Invert the color of the icon */
-    }
+    {% comment %} #navbar {
+      z-index: 1000;
+      --bs-bg-opacity: 0.9;
+    } {% endcomment %}
+  
+    {% comment %} /* Position the navbar fixed for smaller screens */
+    #navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    } {% endcomment %}
+    
+    /* Invert the color of the icon */
     #navbar .navbar-toggler-icon {
-      filter: invert(100%); /* Invert the color of the icon */
+      filter: invert(100%);
     }
   }
 </style>
@@ -33,9 +43,11 @@
 <nav class="navbar navbar-expand-lg container-fluid bg-dark" id='navbar'>
     <div class="container-fluid px-4">
       <a class="navbar-brand h1 text-danger" href="{% url 'home:home' %}">rp2r</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <div id="small-text-color-id"></div>
+      <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown h5">
@@ -159,7 +171,7 @@
           </li>
         </ul>
         
-        <span class="navbar-text h5">
+        <span id="text-color-id" class="navbar-text h5">
           <div class='text-white px-3'>
             Romani pe doua roti
           </div>
@@ -190,3 +202,15 @@
       </div>
     </div>
   </nav>
+  <script>
+    if (window.innerWidth <= 800) {
+      // Get the content from text-color-id
+      var textContent = document.getElementById('text-color-id').innerHTML;
+      
+      // Set the content to small-text-color-id
+      document.getElementById('small-text-color-id').innerHTML = textContent;
+      
+      // Clear the content of text-color-id
+      document.getElementById('text-color-id').innerHTML = '';
+    }
+  </script>

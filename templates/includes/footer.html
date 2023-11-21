@@ -4,7 +4,7 @@
 <style>
     .logo-footer {
       background-color: black;
-      background-image: url('/media/rp2r_bg.jpg');
+      background-image: url('https://scontent.fflr4-1.fna.fbcdn.net/v/t39.30808-6/316018639_5555624221189626_7667045671348702986_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=EZ6_6Nee1ksAX_LYcCh&_nc_ht=scontent.fflr4-1.fna&oh=00_AfDeHI3eaB0MS8ncXGLyRUgp6LrjIPSiscccT_IrHHJJZg&oe=65609530');
       background-size: 100% 100%;
       height: 120px;
       width: 200px;
@@ -26,23 +26,13 @@
       text-decoration: none; /* Remove underline if desired */
     }
     
-  
-    @media (max-width: 600px) {
-      /* Adjust the minimum size for smaller screens */
-      .logo-footer {
-        min-height: 200px;
-        min-width: 300px;
-      }
-    }
+
 </style>
 {% endblock stylesheets %}
 
-
-
-
 <footer id='footer-id' class="footer container-fluid text-bg-dark">
-  <div class="row pt-4">
-    <div class="col-md-2">
+  <div class="row pt-4 pt-sm-0">
+    <div id="logo-id" class="col-md-2">
       <div class="copyright mb-1 px-4 text-muted">
         &copy; coded by
         <a target="_blank" rel="noopener noreferrer" href=""> Gafyf</a>
@@ -51,7 +41,7 @@
       </div>
       <small class="d-block mb-3 mt-1 px-5 text-muted">{% now "jS \o\f F Y" %}</small>
     </div>
-    <div class="col-md-2">
+    <div class="menu col-md-2">
       <h5>Events</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'event:event_list' %}?created_by=gafyf@yahoo.com">Our Events</a></li>
@@ -60,7 +50,7 @@
         <li><a href="{% url 'event:event_list' %}">Events in Europe</a></li>
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>Gallery</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'gallery:gallery' %}?title=Motorcycles">Motorcycles</a></li>
@@ -69,7 +59,7 @@
         <li><a href="{% url 'gallery:gallery' %}">All Albums</a></li>
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>Itineraries</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'itinerary:itineraries' %}?country=Italy">Italy</a></li>
@@ -77,7 +67,7 @@
         <li><a href="{% url 'itinerary:itineraries' %}">All</a></li>
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>News</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'new:new' %}?title=MotoGP">MotoGP</a></li>
@@ -85,13 +75,13 @@
         <li><a href="{% url 'new:new' %}">All News</a></li>
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>Guestbook</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'guest:message_list' %}">Messages</a></li>
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>Account</h5>
       <ul class="list-unstyled">
         {% if user.is_authenticated %}
@@ -107,13 +97,13 @@
         {% endif %}
       </ul>
     </div>
-    <div class="col-md-1">
+    <div class="menu col-md-1">
       <h5>Chat</h5>
       <ul class="list-unstyled">
         <li><a href="{% url 'account:login' %}">Virtual Assistant</a></li>
       </ul>
     </div>
-    <div class="col-md-2">
+    <div id="social-id" class="social col-md-2">
       <ul class="list-unstyled">
         <li class='d-flex justify-content-center'>
           <a href="https://www.facebook.com/groups/158805437833992" target="_blank" class='m-4'>
@@ -121,7 +111,7 @@
               <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
             </svg>
           </a>
-          <a href="https://www.youtube.com/@EDURIDERMOTOVLOGS" target="_blank" class='m-4'>
+          <a href="https://www.youtube.com/playlist?list=PLfa3QjEImwoW8QyEdu2YjVP0jZW7kZDo1" target="_blank" class='m-4'>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="fill: #FF0000;" class="bi bi-youtube" viewBox="0 0 16 16">
               <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/>
             </svg>
@@ -143,6 +133,19 @@
     </div>
   </div>
 </footer>
+<script>
+  if (window.innerWidth <= 800) {
+    document.getElementById('logo-id').innerHTML = ``;
+    // Get all elements with the class name "menu-class"
+    var menuElements = document.getElementsByClassName('menu');
+    
+    // Loop through all matching elements and set their innerHTML to an empty string
+    for (var i = 0; i < menuElements.length; i++) {
+      menuElements[i].innerHTML = '';
+    }
+  }
+</script>
+
 
 
 

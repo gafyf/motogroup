@@ -3,8 +3,21 @@
 
 {% block title %} Album detail {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+<style>
+  @media (max-width: 800px) {
+    /* Adjust the minimum size for smaller screens */
+    h4 {
+      font-size: 15px;
+    }
+    nav.nav-pagination-class {
+      opacity: 50%;
+    }
+  }
+</style>
+
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -62,7 +75,7 @@
         </div>
         {% endfor %}
     </div>
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" class='nav-pagination-class'>
       <ul class="pagination justify-content-center mt-3">
         {% if page_obj.has_previous %}
           <li class="page-item">
@@ -102,5 +115,4 @@
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}
