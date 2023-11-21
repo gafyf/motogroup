@@ -178,8 +178,4 @@ CSRF_COOKIE_NAME = 'csrftoken'
 WEATHER_API_KEY = config('WEATHER_API_KEY')
 TOMTOM_API_KEY = config('TOMTOM_API_KEY')
 CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:8000',  # Add your frontend origin here
-# ]
 
-CSRF_TRUSTED_ORIGINS = ['https://2871-2a02-b023-12-8423-b48c-f556-d807-35d1.ngrok-free.app']
